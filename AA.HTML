@@ -1694,7 +1694,7 @@
                 ).join('<br>');
                 document.getElementById('gameoverSubtitle').innerHTML += `<br><br><span style="font-size:0.8em;color:var(--text-muted);">${allRoles}</span>`;
 
-                addLog(game.winner === 'bomba' ? '💣 Bomba venceu!' : game.winner === 'cidadaos' ? '🏆 Cidadãos venceram!' : '🔪 Assassino venceu!');
+                addLog(game.winner === 'bomba' ? '💣 bomba venceu!' : game.winner === 'cidadaos' ? '🏆 Cidadãos venceram!' : '🔪 Assassino venceu!');
                 updateGameLog();
                 showScreen('gameover');
 
