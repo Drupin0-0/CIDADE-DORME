@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cidade Dorme</title>
+    <style>
+        :root {
+            --bg: #0a0a14;
+            --bg-card: #151528;
+            --bg-card-hover: #1c1c38;
+            --text: #e0e0e8;
+            --text-muted: #8888a8;
+            --accent: #c9a84c;
+            --accent-glow: #f0d060;
+            --danger: #e74c3c;
+            --danger-glow: #ff6b6b;
+            --blue: #4a90d9;
+            --blue-glow: #6db3f0;
+            --green: #2ecc71;
+            --green-glow: #5dffa0;
+            --orange: #e67e22;
+            --orange-glow: #ffa055;
+            --purple: #9b59b6;
+            --purple-glow: #c07de0;
+            --gray: #7f8c8d;
+            --teal: #1abc9c;
+            --teal-glow: #3de0c0;
+            --border: #252540;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(ellipse at 50% 0%, rgba(100, 80, 180, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 100%, rgba(40, 30, 80, 0.2) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(20, 20, 60, 0.3) 0%, transparent 50%);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+            animation-delay: var(--delay);
+            opacity: 0;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.6); }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 500px;
+            padding: 16px;
+        }
+
+        .screen {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+        .screen.active {
+            display: block;
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+        }
+
+        .logo-area {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .logo-icon {
+            font-size: 56px;
+            display: block;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(200, 170, 80, 0.5));
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .logo-title {
+            font-size: 2.2em;
+            font-weight: 800;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #c9a84c, #f0d060, #c9a84c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 4px 0;
+        }
+        .logo-subtitle {
+            font-size: 0.9em;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .player-count-input-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .player-count-input {
+            width: 120px;
+            padding: 12px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: 700;
+            text-align: center;
+            outline: none;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .player-count-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(200, 170, 80, 0.25);
+        }
+
+        .player-count-input::-webkit-inner-spin-button,
+        .player-count-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .player-count-input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .player-count-label {
+            font-size: 0.9em;
+            color: var(--text-muted);
+        }
+
+        .role-toggles {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .role-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+        .role-toggle:hover {
+            border-color: #444;
+            background: var(--bg-card-hover);
+        }
+        .role-toggle.active {
+            border-color: var(--accent);
+            background: rgba(200, 170, 80, 0.08);
+        }
+        .role-toggle.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(0.6);
+        }
+        .role-toggle.locked {
+            border-color: #3a3a55;
+            cursor: default;
+            opacity: 0.85;
+        }
+        .role-toggle-icon {
+            font-size: 1.6em;
+            width: 36px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        .role-toggle-info {
+            flex: 1;
+        }
+        .role-toggle-name {
+            font-weight: 600;
+            font-size: 0.95em;
+            color: #ddd;
+        }
+        .role-toggle-desc {
+            font-size: 0.75em;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+        .role-toggle-badge {
+            font-size: 0.7em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .badge-locked {
+            background: rgba(100, 100, 140, 0.3);
+            color: #aaa;
+        }
+        .badge-on {
+            background: rgba(200, 170, 80, 0.2);
+            color: var(--accent-glow);
+        }
+        .badge-off {
+            background: rgba(100, 100, 120, 0.2);
+            color: #777;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            letter-spacing: 0.5px;
+            width: 100%;
+            font-family: var(--font);
+            pointer-events: auto;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #c9a84c, #b8942e);
+            color: #1a1a20;
+            box-shadow: 0 4px 20px rgba(200, 170, 80, 0.3);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 28px rgba(200, 170, 80, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(231, 76, 60, 0.3);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 6px 24px rgba(231, 76, 60, 0.5);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            border-color: #555;
+            background: var(--bg-card-hover);
+        }
+        .btn-sm {
+            padding: 10px 20px;
+            font-size: 0.85em;
+            width: auto;
+            border-radius: 20px;
+        }
+
+        .name-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .name-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 4px 14px;
+            transition: var(--transition);
+        }
+        .name-input-group:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(200, 170, 80, 0.15);
+        }
+        .name-input-num {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9em;
+            min-width: 28px;
+            text-align: center;
+        }
+        .name-input-group input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.95em;
+            padding: 12px 0;
+            outline: none;
+            font-family: var(--font);
+        }
+        .name-input-group input::placeholder {
+            color: #555;
+        }
+
+        .reveal-card {
+            text-align: center;
+            padding: 40px 24px;
+            cursor: pointer;
+            position: relative;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 2px dashed var(--border);
+        }
+        .reveal-card.revealed {
+            border-style: solid;
+            cursor: default;
+        }
+        .reveal-card .reveal-icon {
+            font-size: 64px;
+            transition: var(--transition);
+            margin-bottom: 12px;
+        }
+        .reveal-card .reveal-text {
+            font-size: 1.1em;
+            color: var(--text-muted);
+            transition: var(--transition);
+        }
+        .reveal-card.revealed .reveal-icon {
+            font-size: 72px;
+            animation: popIn 0.5s ease;
+        }
+        .reveal-card.revealed .reveal-text {
+            color: #fff;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .reveal-role-name {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin: 8px 0;
+            letter-spacing: 1px;
+        }
+        .reveal-role-desc {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            max-width: 300px;
+            line-height: 1.5;
+        }
+        .reveal-player-label {
+            font-size: 0.8em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+        .reveal-player-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .game-phase-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+        .phase-night {
+            background: rgba(30, 30, 80, 0.6);
+            border: 1px solid #2a2a60;
+            color: #b0b0e0;
+        }
+        .phase-day {
+            background: rgba(60, 50, 20, 0.5);
+            border: 1px solid #5a4a20;
+            color: #e0c870;
+        }
+
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .player-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            font-size: 0.9em;
+            pointer-events: auto;
+        }
+        .player-chip:hover {
+            border-color: #555;
+            background: var(--bg-card-hover);
+        }
+        .player-chip.selected {
+            border-color: var(--accent);
+            background: rgba(200, 170, 80, 0.12);
+            box-shadow: 0 0 14px rgba(200, 170, 80, 0.25);
+        }
+        .player-chip.dead {
+            opacity: 0.4;
+            text-decoration: line-through;
+            pointer-events: none;
+            cursor: default;
+            filter: grayscale(0.7);
+        }
+        .player-chip .chip-icon {
+            font-size: 1.2em;
+        }
+        .player-chip .chip-name {
+            flex: 1;
+        }
+
+        .night-step-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+        .night-step-card .step-icon {
+            font-size: 50px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .night-step-card .step-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .night-step-card .step-subtitle {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+
+        .result-banner {
+            padding: 16px 20px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 12px;
+            animation: fadeSlideIn 0.5s ease;
+        }
+        .result-death {
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            color: #ff9090;
+        }
+        .result-safe {
+            background: rgba(46, 204, 113, 0.12);
+            border: 1px solid rgba(46, 204, 113, 0.35);
+            color: #80ffb0;
+        }
+        .result-info {
+            background: rgba(74, 144, 217, 0.12);
+            border: 1px solid rgba(74, 144, 217, 0.35);
+            color: #90c8ff;
+        }
+        .result-bomb-win {
+            background: rgba(230, 126, 34, 0.2);
+            border: 1px solid rgba(230, 126, 34, 0.5);
+            color: #ffb74d;
+            font-size: 1.1em;
+        }
+
+        .game-log {
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: 0.8em;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .game-log .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        .game-log .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .gameover-card {
+            text-align: center;
+            padding: 40px 24px;
+        }
+        .gameover-icon {
+            font-size: 80px;
+            display: block;
+            animation: float 2s ease-in-out infinite;
+        }
+        .gameover-title {
+            font-size: 2em;
+            font-weight: 800;
+            margin: 12px 0;
+            letter-spacing: 1px;
+        }
+        .gameover-subtitle {
+            font-size: 1em;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .graveyard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+        .graveyard-chip {
+            font-size: 0.75em;
+            padding: 4px 12px;
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            color: #888;
+            border: 1px solid #333;
+        }
+
+        .mudo-banner {
+            background: rgba(127, 140, 141, 0.15);
+            border: 1px solid rgba(127, 140, 141, 0.4);
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            text-align: center;
+            font-size: 0.85em;
+            color: #bbb;
+            margin-bottom: 12px;
+        }
+
+        .section-label {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 20px 14px;
+            }
+            .logo-title {
+                font-size: 1.7em;
+            }
+            .player-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars" id="starsContainer"></div>
+
+    <div class="app-container">
+        <!-- SETUP SCREEN -->
+        <div class="screen active" id="screen-setup">
+            <div class="card">
+                <div class="logo-area">
+                    <span class="logo-icon">🌙</span>
+                    <div class="logo-title">CIDADE DORME</div>
+                    <div class="logo-subtitle">O Jogo da Noite</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>👥 Quantos jogadores?</h2>
+                <div class="player-count-input-container">
+                    <span class="player-count-label">De 4 a 12:</span>
+                    <input 
+                        type="number" 
+                        class="player-count-input" 
+                        id="playerCountInput" 
+                        min="4" 
+                        max="12" 
+                        value="6"
+                        placeholder="6"
+                    >
+                </div>
+                <div style="text-align:center;color:var(--text-muted);font-size:0.75em;" id="playerCountHint">
+                    Digite um número entre 4 e 12
+                </div>
+            </div>
+
+            <div class="card" id="rolesCard">
+                <h2>🎭 Papéis em jogo</h2>
+                <div class="role-toggles" id="roleToggles"></div>
+                <div style="text-align:center;color:var(--text-muted);font-size:0.8em;margin-top:8px;" id="roleSummary"></div>
+            </div>
+
+            <button class="btn btn-primary" id="btnStartSetup">
+                ✨ Começar Jogo
+            </button>
+        </div>
+
+        <!-- NAMES SCREEN -->
+        <div class="screen" id="screen-names">
+            <div class="card">
+                <h2>📝 Nomes dos Jogadores</h2>
+                <p style="color:var(--text-muted);font-size:0.85em;margin-bottom:16px;">Digite o nome de cada participante:</p>
+                <div class="name-inputs" id="nameInputs"></div>
+                <button class="btn btn-primary" id="btnDistributeRoles">
+                    🎴 Distribuir Papéis
+                </button>
+                <button class="btn btn-secondary" style="margin-top:8px;" id="btnBackToSetup">
+                    ← Voltar
+                </button>
+            </div>
+        </div>
+
+        <!-- ROLE REVEAL SCREEN -->
+        <div class="screen" id="screen-reveal">
+            <div class="card">
+                <div class="reveal-player-label">Jogador <span id="revealPlayerNum">1</span></div>
+                <div class="reveal-player-name" id="revealPlayerName">—</div>
+                <div class="reveal-card" id="revealCard">
+                    <span class="reveal-icon">🃏</span>
+                    <span class="reveal-text">Toque para revelar seu papel</span>
+                    <div class="reveal-role-name" style="display:none;" id="revealRoleName"></div>
+                    <div class="reveal-role-desc" style="display:none;" id="revealRoleDesc"></div>
+                </div>
+                <button class="btn btn-primary" id="btnNextReveal" style="margin-top:16px;display:none;">
+                    Próximo Jogador →
+                </button>
+                <button class="btn btn-secondary" id="btnStartGameAfterReveal" style="margin-top:8px;display:none;">
+                    🌙 Começar a Noite
+                </button>
+                <div style="text-align:center;color:var(--text-muted);font-size:0.8em;margin-top:12px;" id="revealProgress"></div>
+            </div>
+        </div>
+
+        <!-- GAME SCREEN -->
+        <div class="screen" id="screen-game">
+            <div class="game-phase-indicator phase-night" id="phaseIndicator">
+                🌙 Fase: Noite
+            </div>
+
+            <div class="card" id="gameMainCard">
+                <!-- Dynamic content -->
+            </div>
+
+            <div class="card" id="playersStatusCard">
+                <h2>👥 Jogadores Vivos</h2>
+                <div class="player-grid" id="alivePlayersGrid"></div>
+                <div class="section-label">🪦 Cemitério</div>
+                <div class="graveyard" id="graveyard"></div>
+                <div class="mudo-banner" id="mudoBanner" style="display:none;"></div>
+            </div>
+
+            <div class="card" style="padding:14px 18px;">
+                <details>
+                    <summary style="cursor:pointer;font-weight:600;font-size:0.9em;color:var(--text-muted);">📜 Histórico</summary>
+                    <div class="game-log" id="gameLog" style="margin-top:8px;"></div>
+                </details>
+            </div>
+        </div>
+
+        <!-- GAME OVER SCREEN -->
+        <div class="screen" id="screen-gameover">
+            <div class="card gameover-card">
+                <span class="gameover-icon" id="gameoverIcon">🏆</span>
+                <div class="gameover-title" id="gameoverTitle"></div>
+                <div class="gameover-subtitle" id="gameoverSubtitle"></div>
+                <button class="btn btn-primary" id="btnRestart">
+                    🔄 Jogar Novamente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ──────────────────────────────────────
+            // STARS BACKGROUND
+            // ──────────────────────────────────────
+            const starsContainer = document.getElementById('starsContainer');
+            for (let i = 0; i < 80; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const size = Math.random() * 2.5 + 0.8;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 3 + 1.5) + 's');
+                star.style.setProperty('--delay', Math.random() * 4 + 's');
+                starsContainer.appendChild(star);
+            }
+
+            // ──────────────────────────────────────
+            // DOM REFERENCES
+            // ──────────────────────────────────────
+            const screens = {
+                setup: document.getElementById('screen-setup'),
+                names: document.getElementById('screen-names'),
+                reveal: document.getElementById('screen-reveal'),
+                game: document.getElementById('screen-game'),
+                gameover: document.getElementById('screen-gameover'),
+            };
+
+            function showScreen(name) {
+                Object.values(screens).forEach(s => s.classList.remove('active'));
+                screens[name].classList.add('active');
+                screens[name].style.animation = 'none';
+                screens[name].offsetHeight;
+                screens[name].style.animation = 'fadeSlideIn 0.4s ease';
+            }
+
+            // ──────────────────────────────────────
+            // GAME STATE
+            // ──────────────────────────────────────
+            const ROLE_DEFS = {
+                assassino: { name: 'Assassino', icon: '🔪', color: '#e74c3c', desc: 'A cada noite, escolha uma pessoa para eliminar.' },
+                detetive: { name: 'Detetive', icon: '🔍', color: '#4a90d9', desc: 'A cada noite, investigue um jogador.' },
+                medico: { name: 'Médico', icon: '💊', color: '#2ecc71', desc: 'A cada noite, escolha um jogador para salvar.' },
+                bomba: { name: 'Bomba', icon: '💣', color: '#e67e22', desc: 'Se for eliminado na votação, você VENCE o jogo!' },
+                vingador: { name: 'Vingador', icon: '⚔️', color: '#9b59b6', desc: 'Ao morrer, escolha imediatamente alguém para levar junto!' },
+                mudo: { name: 'Mudo', icon: '🤫', color: '#7f8c8d', desc: 'A cada noite, escolha um jogador para ficar mudo no dia seguinte.' },
+                cidadao: { name: 'Cidadão', icon: '👤', color: '#1abc9c', desc: 'Cidadão comum. Vote para eliminar o Assassino.' },
+            };
+
+            const LOCKED_ROLES = ['assassino', 'detetive', 'medico'];
+            const OPTIONAL_ROLES = ['bomba', 'vingador', 'mudo'];
+            const OPTIONAL_MIN_PLAYERS = 6;
+
+            let game = {
+                playerCount: 6,
+                activeOptionalRoles: [],
+                players: [],
+                currentRevealIndex: 0,
+                revealed: false,
+                phase: 'setup',
+                nightStep: 0,
+                dayStep: 0,
+                nightTargets: {},
+                lastSavedPlayer: null,
+                mutedPlayer: null,
+                eliminatedTonight: [],
+                savedTonight: null,
+                gameLog: [],
+                round: 0,
+                winner: null,
+                pendingVingadorRevenge: false,
+            };
+
+            function getConfiguredRoles() {
+                const roles = [...LOCKED_ROLES];
+                for (const r of OPTIONAL_ROLES) {
+                    if (game.activeOptionalRoles.includes(r)) roles.push(r);
+                }
+                const cidadaoCount = game.playerCount - roles.length;
+                for (let i = 0; i < cidadaoCount; i++) roles.push('cidadao');
+                return roles;
+            }
+
+            function shuffleArray(arr) {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+            }
+
+            function getAlivePlayers() {
+                return game.players.filter(p => p.alive);
+            }
+
+            function getDeadPlayers() {
+                return game.players.filter(p => !p.alive);
+            }
+
+            function getPlayerByRole(role) {
+                return game.players.find(p => p.role === role && p.alive);
+            }
+
+            function getAssassino() {
+                return game.players.find(p => p.role === 'assassino');
+            }
+
+            function getMudo() {
+                return game.players.find(p => p.role === 'mudo' && p.alive);
+            }
+
+            function addLog(msg) {
+                game.gameLog.push(`[Rodada ${game.round}] ${msg}`);
+                if (game.gameLog.length > 50) game.gameLog.shift();
+            }
+
+            function checkWinCondition() {
+                const alive = getAlivePlayers();
+                const aliveAssassinos = alive.filter(p => p.role === 'assassino');
+                const aliveNonAssassinos = alive.filter(p => p.role !== 'assassino');
+
+                if (aliveAssassinos.length === 0) {
+                    game.winner = 'cidadaos';
+                    game.phase = 'gameover';
+                    endGame();
+                    return true;
+                }
+                if (aliveAssassinos.length >= aliveNonAssassinos.length) {
+                    game.winner = 'assassino';
+                    game.phase = 'gameover';
+                    endGame();
+                    return true;
+                }
+                return false;
+            }
+
+            function killPlayer(player, cause, triggerVingador = true) {
+                if (!player.alive) return;
+                player.alive = false;
+                addLog(`${player.name} (${ROLE_DEFS[player.role].name}) foi eliminado(a) — ${cause}`);
+
+                // Vingador revenge - immediate
+                if (triggerVingador && player.role === 'vingador') {
+                    triggerVingadorRevenge(player);
+                }
+            }
+
+            function triggerVingadorRevenge(vingadorPlayer) {
+                const aliveOthers = getAlivePlayers().filter(p => p.name !== vingadorPlayer.name);
+                if (aliveOthers.length === 0) {
+                    addLog('⚔️ Vingador morreu, mas não há ninguém para se vingar.');
+                    return;
+                }
+
+                game.pendingVingadorRevenge = true;
+                
+                // Show revenge selection immediately
+                const mainCard = document.getElementById('gameMainCard');
+                mainCard.innerHTML = `
+                    <div class="night-step-card">
+                        <span class="step-icon">⚔️</span>
+                        <div class="step-title">Vingança do Vingador!</div>
+                        <div class="step-subtitle">${vingadorPlayer.name} morreu e pode levar alguém junto!</div>
+                    </div>
+                    <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione o alvo da vingança:</p>
+                    <div class="player-grid" id="vingadorRevengeGrid"></div>
+                    <button class="btn btn-danger" id="btnConfirmRevenge" disabled>⚔️ Confirmar Vingança</button>
+                    <button class="btn btn-secondary btn-sm" style="margin-top:8px;display:block;margin-left:auto;margin-right:auto;" id="btnSkipRevenge">Pular (não se vingar)</button>
+                `;
+
+                const grid = document.getElementById('vingadorRevengeGrid');
+                const btn = document.getElementById('btnConfirmRevenge');
+                let selected = null;
+
+                aliveOthers.forEach(p => {
+                    const chip = document.createElement('div');
+                    chip.className = 'player-chip';
+                    chip.dataset.playerId = p.name;
+                    chip.innerHTML = `
+                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
+                        <span class="chip-name">${p.name}</span>
+                    `;
+                    chip.onclick = () => {
+                        grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
+                        chip.classList.add('selected');
+                        selected = p.name;
+                        btn.disabled = false;
+                    };
+                    grid.appendChild(chip);
+                });
+
+                btn.onclick = () => {
+                    if (!selected) return;
+                    const target = game.players.find(p => p.name === selected && p.alive);
+                    if (target) {
+                        killPlayer(target, 'Vingança do Vingador', false);
+                        addLog(`⚔️ ${vingadorPlayer.name} levou ${target.name} junto na vingança!`);
+                        
+                        game.pendingVingadorRevenge = false;
+                        
+                        if (checkWinCondition()) return;
+                    }
+                    
+                    // Continue with the game flow
+                    if (game.phase === 'night') {
+                        game.nightStep++;
+                        renderGame();
+                    } else if (game.phase === 'day') {
+                        proceedToNextNight();
+                    }
+                };
+
+                document.getElementById('btnSkipRevenge').onclick = () => {
+                    addLog('⚔️ Vingador decidiu não se vingar.');
+                    game.pendingVingadorRevenge = false;
+                    
+                    if (game.phase === 'night') {
+                        game.nightStep++;
+                        renderGame();
+                    } else if (game.phase === 'day') {
+                        proceedToNextNight();
+                    }
+                };
+
+                updateAlivePlayersGrid();
+                updateGraveyard();
+            }
+
+            // ──────────────────────────────────────
+            // SETUP SCREEN
+            // ──────────────────────────────────────
+            function renderSetup() {
+                game.playerCount = 6;
+                game.activeOptionalRoles = [];
+                game.players = [];
+                game.currentRevealIndex = 0;
+                game.revealed = false;
+                game.phase = 'setup';
+                game.nightStep = 0;
+                game.dayStep = 0;
+                game.nightTargets = {};
+                game.lastSavedPlayer = null;
+                game.mutedPlayer = null;
+                game.eliminatedTonight = [];
+                game.savedTonight = null;
+                game.gameLog = [];
+                game.round = 0;
+                game.winner = null;
+                game.pendingVingadorRevenge = false;
+
+                // Set up player count input
+                const playerCountInput = document.getElementById('playerCountInput');
+                playerCountInput.value = 6;
+                playerCountInput.oninput = function() {
+                    let value = parseInt(this.value);
+                    if (isNaN(value) || value < 4) {
+                        this.value = 4;
+                        game.playerCount = 4;
+                    } else if (value > 12) {
+                        this.value = 12;
+                        game.playerCount = 12;
+                    } else {
+                        game.playerCount = value;
+                    }
+                    updateRoleToggles();
+                    updateRoleSummary();
+                };
+                
+                updateRoleToggles();
+                updateRoleSummary();
+                
+                document.getElementById('btnStartSetup').onclick = () => {
+                    if (game.playerCount < 4 || game.playerCount > 12) {
+                        alert('Digite um número de jogadores entre 4 e 12.');
+                        return;
+                    }
+                    const configured = getConfiguredRoles();
+                    if (configured.length !== game.playerCount) {
+                        alert('Erro na configuração dos papéis. Ajuste as opções.');
+                        return;
+                    }
+                    game.phase = 'names';
+                    renderNames();
+                    showScreen('names');
+                };
+                
+                showScreen('setup');
+            }
+
+            function updateRoleToggles() {
+                const container = document.getElementById('roleToggles');
+                container.innerHTML = '';
+
+                const canUseOptional = game.playerCount >= OPTIONAL_MIN_PLAYERS;
+
+                for (const roleKey of LOCKED_ROLES) {
+                    const def = ROLE_DEFS[roleKey];
+                    const div = document.createElement('div');
+                    div.className = 'role-toggle locked';
+                    div.innerHTML = `
+                        <span class="role-toggle-icon">${def.icon}</span>
+                        <div class="role-toggle-info">
+                            <div class="role-toggle-name">${def.name}</div>
+                            <div class="role-toggle-desc">${def.desc}</div>
+                        </div>
+                        <span class="role-toggle-badge badge-locked">OBRIGATÓRIO</span>
+                    `;
+                    container.appendChild(div);
+                }
+
+                for (const roleKey of OPTIONAL_ROLES) {
+                    const def = ROLE_DEFS[roleKey];
+                    const isActive = game.activeOptionalRoles.includes(roleKey);
+                    const div = document.createElement('div');
+                    div.className = 'role-toggle' + (isActive ? ' active' : '') + (!canUseOptional ? ' disabled' : '');
+                    div.innerHTML = `
+                        <span class="role-toggle-icon">${def.icon}</span>
+                        <div class="role-toggle-info">
+                            <div class="role-toggle-name">${def.name}</div>
+                            <div class="role-toggle-desc">${def.desc}</div>
+                        </div>
+                        <span class="role-toggle-badge ${isActive ? 'badge-on' : 'badge-off'}">${isActive ? 'ATIVO' : canUseOptional ? 'INATIVO' : '6+ JOGADORES'}</span>
+                    `;
+                    
+                    if (canUseOptional) {
+                        div.onclick = function() {
+                            if (isActive) {
+                                game.activeOptionalRoles = game.activeOptionalRoles.filter(r => r !== roleKey);
+                            } else {
+                                game.activeOptionalRoles.push(roleKey);
+                            }
+                            updateRoleToggles();
+                            updateRoleSummary();
+                        };
+                    }
+                    container.appendChild(div);
+                }
+            }
+
+            function updateRoleSummary() {
+                const summary = document.getElementById('roleSummary');
+                const configured = getConfiguredRoles();
+                const counts = {};
+                for (const r of configured) {
+                    counts[r] = (counts[r] || 0) + 1;
+                }
+                const parts = [];
+                for (const [role, count] of Object.entries(counts)) {
+                    parts.push(`${count}x ${ROLE_DEFS[role].icon} ${ROLE_DEFS[role].name}`);
+                }
+                summary.textContent = `Total: ${game.playerCount} jogadores · ${parts.join(' · ')}`;
+            }
+
+            // ──────────────────────────────────────
+            // NAMES SCREEN
+            // ──────────────────────────────────────
+            function renderNames() {
+                const container = document.getElementById('nameInputs');
+                container.innerHTML = '';
+                for (let i = 0; i < game.playerCount; i++) {
+                    const group = document.createElement('div');
+                    group.className = 'name-input-group';
+                    group.innerHTML = `
+                        <span class="name-input-num">#${i + 1}</span>
+                        <input type="text" placeholder="Nome do jogador ${i + 1}" data-index="${i}" maxlength="20">
+                    `;
+                    container.appendChild(group);
+                }
+                
+                document.getElementById('btnDistributeRoles').onclick = () => {
+                    const inputs = container.querySelectorAll('input');
+                    const names = [];
+                    let allFilled = true;
+                    inputs.forEach(inp => {
+                        const name = inp.value.trim();
+                        if (!name) allFilled = false;
+                        names.push(name || `Jogador ${parseInt(inp.dataset.index) + 1}`);
+                    });
+                    if (!allFilled) {
+                        if (!confirm('Alguns nomes estão vazios. Serão usados nomes padrão. Continuar?')) return;
+                    }
+                    
+                    const configuredRoles = getConfiguredRoles();
+                    const shuffledRoles = shuffleArray(configuredRoles);
+                    game.players = names.map((name, i) => ({
+                        name,
+                        role: shuffledRoles[i],
+                        alive: true,
+                    }));
+                    game.currentRevealIndex = 0;
+                    game.revealed = false;
+                    game.phase = 'reveal';
+                    renderReveal();
+                    showScreen('reveal');
+                };
+                
+                document.getElementById('btnBackToSetup').onclick = () => {
+                    game.phase = 'setup';
+                    renderSetup();
+                    showScreen('setup');
+                };
+            }
+
+            // ──────────────────────────────────────
+            // ROLE REVEAL SCREEN
+            // ──────────────────────────────────────
+            function renderReveal() {
+                const idx = game.currentRevealIndex;
+                const player = game.players[idx];
+                document.getElementById('revealPlayerNum').textContent = idx + 1;
+                document.getElementById('revealPlayerName').textContent = player.name;
+                document.getElementById('revealProgress').textContent = `Jogador ${idx + 1} de ${game.players.length}`;
+
+                const card = document.getElementById('revealCard');
+                card.classList.remove('revealed');
+                card.querySelector('.reveal-icon').textContent = '🃏';
+                card.querySelector('.reveal-icon').style.display = '';
+                card.querySelector('.reveal-text').textContent = 'Toque para revelar seu papel';
+                card.querySelector('.reveal-text').style.display = '';
+                card.querySelector('.reveal-role-name').style.display = 'none';
+                card.querySelector('.reveal-role-desc').style.display = 'none';
+                card.style.borderColor = '';
+                card.style.boxShadow = '';
+
+                document.getElementById('btnNextReveal').style.display = 'none';
+                document.getElementById('btnStartGameAfterReveal').style.display = 'none';
+                game.revealed = false;
+
+                card.onclick = () => {
+                    if (game.revealed) return;
+                    game.revealed = true;
+                    const def = ROLE_DEFS[player.role];
+                    card.classList.add('revealed');
+                    card.querySelector('.reveal-icon').textContent = def.icon;
+                    card.querySelector('.reveal-text').style.display = 'none';
+                    const roleNameEl = card.querySelector('.reveal-role-name');
+                    roleNameEl.textContent = def.name;
+                    roleNameEl.style.display = '';
+                    roleNameEl.style.color = def.color;
+                    const roleDescEl = card.querySelector('.reveal-role-desc');
+                    roleDescEl.textContent = def.desc;
+                    roleDescEl.style.display = '';
+                    card.style.borderColor = def.color;
+                    card.style.boxShadow = `0 0 30px ${def.color}33`;
+
+                    if (idx < game.players.length - 1) {
+                        document.getElementById('btnNextReveal').style.display = '';
+                    } else {
+                        document.getElementById('btnStartGameAfterReveal').style.display = '';
+                    }
+                };
+
+                document.getElementById('btnNextReveal').onclick = () => {
+                    game.currentRevealIndex++;
+                    game.revealed = false;
+                    renderReveal();
+                };
+                
+                document.getElementById('btnStartGameAfterReveal').onclick = () => {
+                    game.phase = 'night';
+                    game.round = 1;
+                    game.nightStep = 0;
+                    game.nightTargets = {};
+                    game.mutedPlayer = null;
+                    game.eliminatedTonight = [];
+                    game.savedTonight = null;
+                    game.lastSavedPlayer = null;
+                    addLog('🌙 A primeira noite começa...');
+                    renderGame();
+                    showScreen('game');
+                };
+            }
+
+            // ──────────────────────────────────────
+            // GAME SCREEN
+            // ──────────────────────────────────────
+            function renderGame() {
+                updatePhaseIndicator();
+                updateAlivePlayersGrid();
+                updateGraveyard();
+                updateMudoBanner();
+                updateGameLog();
+
+                const mainCard = document.getElementById('gameMainCard');
+
+                if (game.phase === 'night') {
+                    renderNightPhase(mainCard);
+                } else if (game.phase === 'day') {
+                    renderDayPhase(mainCard);
+                }
+            }
+
+            function updatePhaseIndicator() {
+                const el = document.getElementById('phaseIndicator');
+                if (game.phase === 'night') {
+                    el.className = 'game-phase-indicator phase-night';
+                    el.innerHTML = `🌙 Fase: Noite — Rodada ${game.round}`;
+                } else if (game.phase === 'day') {
+                    el.className = 'game-phase-indicator phase-day';
+                    el.innerHTML = `☀️ Fase: Dia — Rodada ${game.round}`;
+                }
+            }
+
+            function updateAlivePlayersGrid() {
+                const grid = document.getElementById('alivePlayersGrid');
+                const alive = getAlivePlayers();
+                grid.innerHTML = '';
+                alive.forEach(p => {
+                    const chip = document.createElement('div');
+                    chip.className = 'player-chip';
+                    chip.dataset.playerId = p.name;
+                    chip.innerHTML = `
+                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
+                        <span class="chip-name">${p.name}</span>
+                    `;
+                    grid.appendChild(chip);
+                });
+                if (alive.length === 0) {
+                    grid.innerHTML = '<span style="color:var(--text-muted);font-size:0.85em;">Nenhum jogador vivo.</span>';
+                }
+            }
+
+            function updateGraveyard() {
+                const grave = document.getElementById('graveyard');
+                const dead = getDeadPlayers();
+                if (dead.length === 0) {
+                    grave.innerHTML = '<span style="color:#555;font-size:0.75em;">Vazio por enquanto...</span>';
+                } else {
+                    grave.innerHTML = dead.map(p =>
+                        `<span class="graveyard-chip">${ROLE_DEFS[p.role].icon} ${p.name} (${ROLE_DEFS[p.role].name})</span>`
+                    ).join('');
+                }
+            }
+
+            function updateMudoBanner() {
+                const banner = document.getElementById('mudoBanner');
+                if (game.mutedPlayer && game.phase === 'day') {
+                    const mutedPlayer = game.players.find(p => p.name === game.mutedPlayer && p.alive);
+                    if (mutedPlayer) {
+                        banner.style.display = '';
+                        banner.innerHTML = `🤫 <strong>${mutedPlayer.name}</strong> está mudo hoje e não pode falar durante a discussão.`;
+                    } else {
+                        banner.style.display = 'none';
+                    }
+                } else {
+                    banner.style.display = 'none';
+                }
+            }
+
+            function updateGameLog() {
+                const logEl = document.getElementById('gameLog');
+                logEl.innerHTML = game.gameLog.slice(-20).map(e => `<div class="log-entry">${e}</div>`).join('');
+                logEl.scrollTop = logEl.scrollHeight;
+            }
+
+            // ──────────────────────────────────────
+            // NIGHT PHASE
+            // ──────────────────────────────────────
+            function renderNightPhase(mainCard) {
+                const assassino = getAssassino();
+                const assassinoAlive = assassino && assassino.alive;
+                const mudo = getMudo();
+
+                const steps = [];
+                if (assassinoAlive) steps.push('assassino');
+                steps.push('medico');
+                steps.push('detetive');
+                if (mudo) steps.push('mudo');
+                steps.push('resolve');
+
+                if (game.nightStep >= steps.length) {
+                    resolveNight();
+                    return;
+                }
+
+                const currentStep = steps[game.nightStep];
+
+                if (currentStep === 'assassino') {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">🔪</span>
+                            <div class="step-title">Assassino — Hora de Matar</div>
+                            <div class="step-subtitle">O Assassino abre os olhos e escolhe sua vítima.</div>
+                        </div>
+                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione o alvo do Assassino:</p>
+                        <div class="player-grid" id="nightSelectGrid"></div>
+                        <button class="btn btn-danger" id="btnNightAction" disabled>🔪 Confirmar Alvo</button>
+                    `;
+                    setupNightSelection('assassino', mainCard);
+                } else if (currentStep === 'medico') {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">💊</span>
+                            <div class="step-title">Médico — Hora de Salvar</div>
+                            <div class="step-subtitle">O Médico abre os olhos e escolhe quem proteger.</div>
+                            ${game.lastSavedPlayer ? `<div class="step-subtitle" style="color:#ff9090;">⚠️ Não pode salvar <strong>${game.lastSavedPlayer}</strong> novamente.</div>` : ''}
+                        </div>
+                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem o Médico vai salvar:</p>
+                        <div class="player-grid" id="nightSelectGrid"></div>
+                        <button class="btn btn-primary" id="btnNightAction" disabled>💊 Confirmar Salvamento</button>
+                    `;
+                    setupNightSelection('medico', mainCard);
+                } else if (currentStep === 'detetive') {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">🔍</span>
+                            <div class="step-title">Detetive — Investigação</div>
+                            <div class="step-subtitle">O Detetive abre os olhos e investiga um jogador.</div>
+                        </div>
+                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem investigar:</p>
+                        <div class="player-grid" id="nightSelectGrid"></div>
+                        <button class="btn btn-primary" id="btnNightAction" disabled>🔍 Investigar</button>
+                    `;
+                    setupNightSelection('detetive', mainCard);
+                } else if (currentStep === 'mudo') {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">🤫</span>
+                            <div class="step-title">Mudo — Silenciar</div>
+                            <div class="step-subtitle">O Mudo escolhe quem ficará mudo durante o dia.</div>
+                        </div>
+                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem ficará mudo amanhã:</p>
+                        <div class="player-grid" id="nightSelectGrid"></div>
+                        <button class="btn btn-primary" id="btnNightAction" disabled>🤫 Silenciar</button>
+                    `;
+                    setupNightSelection('mudo', mainCard);
+                }
+
+                updateAlivePlayersGrid();
+                updateGraveyard();
+            }
+
+            function setupNightSelection(role, mainCard) {
+                const grid = document.getElementById('nightSelectGrid');
+                const btn = document.getElementById('btnNightAction');
+                let selected = null;
+
+                const alive = getAlivePlayers();
+                grid.innerHTML = '';
+                alive.forEach(p => {
+                    let disabled = false;
+                    
+                    if (role === 'medico' && game.lastSavedPlayer === p.name) {
+                        disabled = true;
+                    }
+                    if (role === 'assassino') {
+                        const assassino = getAssassino();
+                        if (assassino && p.name === assassino.name) disabled = true;
+                    }
+                    if (role === 'mudo') {
+                        const mudo = getMudo();
+                        if (mudo && p.name === mudo.name) disabled = true;
+                    }
+                    
+                    const chip = document.createElement('div');
+                    chip.className = 'player-chip' + (disabled ? ' dead' : '');
+                    chip.dataset.playerId = p.name;
+                    chip.innerHTML = `
+                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
+                        <span class="chip-name">${p.name}</span>
+                    `;
+                    if (!disabled) {
+                        chip.onclick = () => {
+                            grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
+                            chip.classList.add('selected');
+                            selected = p.name;
+                            btn.disabled = false;
+                        };
+                    }
+                    grid.appendChild(chip);
+                });
+
+                btn.onclick = () => {
+                    if (!selected) return;
+                    if (role === 'assassino') {
+                        game.nightTargets.assassino = selected;
+                        game.nightStep++;
+                        addLog('🔪 Assassino escolheu seu alvo.');
+                    } else if (role === 'medico') {
+                        game.nightTargets.medico = selected;
+                        game.nightStep++;
+                        addLog('💊 Médico escolheu quem proteger.');
+                    } else if (role === 'detetive') {
+                        game.nightTargets.detetive = selected;
+                        game.nightStep++;
+                        addLog(`🔍 Detetive investigou ${selected}.`);
+                    } else if (role === 'mudo') {
+                        game.mutedPlayer = selected;
+                        game.nightStep++;
+                        addLog(`🤫 Mudo silenciou ${selected}.`);
+                    }
+                    renderGame();
+                };
+            }
+
+            function resolveNight() {
+                const mainCard = document.getElementById('gameMainCard');
+                game.eliminatedTonight = [];
+                game.savedTonight = null;
+                let resultsHtml = '';
+
+                const assassinoTargetName = game.nightTargets.assassino;
+                const medicoTargetName = game.nightTargets.medico;
+                const detetiveTargetName = game.nightTargets.detetive;
+
+                if (assassinoTargetName) {
+                    const target = game.players.find(p => p.name === assassinoTargetName && p.alive);
+                    if (target) {
+                        if (medicoTargetName === assassinoTargetName) {
+                            game.savedTonight = target.name;
+                            game.lastSavedPlayer = target.name;
+                            resultsHtml += `<div class="result-banner result-safe">💊 <strong>${target.name}</strong> foi salvo pelo Médico!</div>`;
+                            addLog(`💊 ${target.name} foi salvo pelo Médico.`);
+                        } else {
+                            killPlayer(target, 'Assassino', true);
+                            game.eliminatedTonight.push(target);
+                            resultsHtml += `<div class="result-banner result-death">🔪 <strong>${target.name}</strong> foi morto pelo Assassino!</div>`;
+                        }
+                    }
+                }
+
+                if (medicoTargetName && medicoTargetName !== assassinoTargetName) {
+                    game.lastSavedPlayer = medicoTargetName;
+                    addLog(`💊 Médico protegeu ${medicoTargetName}.`);
+                }
+
+                if (detetiveTargetName) {
+                    const detTarget = game.players.find(p => p.name === detetiveTargetName);
+                    if (detTarget) {
+                        const isAssassino = detTarget.role === 'assassino';
+                        resultsHtml += `<div class="result-banner result-info">🔍 Investigação sobre <strong>${detetiveTargetName}</strong>: ${isAssassino ? '⚠️ <strong>É O ASSASSINO!</strong>' : '✅ <strong>Não é o Assassino.</strong>'}</div>`;
+                    }
+                }
+
+                if (game.eliminatedTonight.length === 0 && !game.savedTonight) {
+                    resultsHtml += `<div class="result-banner result-safe">🌙 A noite foi tranquila. Ninguém morreu.</div>`;
+                    addLog('🌙 Noite tranquila, ninguém morreu.');
+                }
+
+                if (checkWinCondition()) return;
+
+                if (game.pendingVingadorRevenge) {
+                    return;
+                }
+
+                game.phase = 'day';
+                game.dayStep = 0;
+                game.nightStep = 0;
+                game.nightTargets = {};
+                addLog('☀️ O dia amanheceu...');
+
+                mainCard.innerHTML = resultsHtml + `
+                    <div style="text-align:center;margin-top:16px;">
+                        <button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Discussão do Dia</button>
+                    </div>
+                `;
+                document.getElementById('btnStartDay').onclick = () => {
+                    game.dayStep = 1;
+                    renderGame();
+                };
+                
+                updateAlivePlayersGrid();
+                updateGraveyard();
+                updateMudoBanner();
+                updatePhaseIndicator();
+            }
+
+            // ──────────────────────────────────────
+            // DAY PHASE
+            // ──────────────────────────────────────
+            function renderDayPhase(mainCard) {
+                if (game.dayStep === 0) {
+                    mainCard.innerHTML = `
+                        <div style="text-align:center;padding:20px;">
+                            <p>☀️ Dia amanheceu.</p>
+                            <button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Discussão</button>
+                        </div>
+                    `;
+                    document.getElementById('btnStartDay').onclick = () => {
+                        game.dayStep = 1;
+                        renderGame();
+                    };
+                } else if (game.dayStep === 1) {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">💬</span>
+                            <div class="step-title">Discussão do Dia</div>
+                            <div class="step-subtitle">Todos discutem e tentam descobrir quem é o Assassino.</div>
+                        </div>
+                        <div style="text-align:center;margin-top:12px;">
+                            <button class="btn btn-danger" id="btnStartVoting">🗳️ Iniciar Votação</button>
+                        </div>
+                    `;
+                    document.getElementById('btnStartVoting').onclick = () => {
+                        game.dayStep = 2;
+                        renderGame();
+                    };
+                } else if (game.dayStep === 2) {
+                    mainCard.innerHTML = `
+                        <div class="night-step-card">
+                            <span class="step-icon">🗳️</span>
+                            <div class="step-title">Votação</div>
+                            <div class="step-subtitle">Selecione o jogador eliminado pela votação.</div>
+                        </div>
+                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Quem foi eliminado pela votação?</p>
+                        <div class="player-grid" id="voteSelectGrid"></div>
+                        <button class="btn btn-danger" id="btnConfirmVote" disabled>🗳️ Confirmar Eliminação</button>
+                        <button class="btn btn-secondary btn-sm" style="margin-top:8px;display:block;margin-left:auto;margin-right:auto;" id="btnSkipVote">Empate / Ninguém</button>
+                    `;
+                    setupVoteSelection();
+                }
+                
+                updateAlivePlayersGrid();
+                updateGraveyard();
+                updateMudoBanner();
+            }
+
+            function setupVoteSelection() {
+                const grid = document.getElementById('voteSelectGrid');
+                const btn = document.getElementById('btnConfirmVote');
+                let selected = null;
+                const alive = getAlivePlayers();
+
+                grid.innerHTML = '';
+                alive.forEach(p => {
+                    const chip = document.createElement('div');
+                    chip.className = 'player-chip';
+                    chip.dataset.playerId = p.name;
+                    chip.innerHTML = `
+                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
+                        <span class="chip-name">${p.name}</span>
+                    `;
+                    chip.onclick = () => {
+                        grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
+                        chip.classList.add('selected');
+                        selected = p.name;
+                        btn.disabled = false;
+                    };
+                    grid.appendChild(chip);
+                });
+
+                btn.onclick = () => {
+                    if (!selected) return;
+                    resolveVote(selected);
+                };
+                
+                document.getElementById('btnSkipVote').onclick = () => {
+                    addLog('🗳️ Houve um empate. Ninguém foi eliminado na votação.');
+                    proceedToNextNight();
+                };
+            }
+
+            function resolveVote(eliminatedName) {
+                const target = game.players.find(p => p.name === eliminatedName && p.alive);
+                if (!target) return;
+                
+                killPlayer(target, 'Votação', true);
+                addLog(`🗳️ ${target.name} foi eliminado por votação. Era ${ROLE_DEFS[target.role].name}.`);
+
+                const mainCard = document.getElementById('gameMainCard');
+                let resultHtml = `<div class="result-banner result-death">🗳️ <strong>${target.name}</strong> foi eliminado por votação! Era <strong>${ROLE_DEFS[target.role].name}</strong>.</div>`;
+
+                // Check if Bomba was eliminated by vote - BOMBA WINS!
+                if (target.role === 'bomba') {
+                    resultHtml += `<div class="result-banner result-bomb-win">💣 <strong>A BOMBA EXPLODE E VENCE O JOGO!</strong><br>${target.name} era a Bomba e foi eliminado na votação!</div>`;
+                    addLog(`💣 ${target.name} (Bomba) foi eliminado na votação e VENCEU O JOGO!`);
+                    game.winner = 'bomba';
+                    game.phase = 'gameover';
+                    mainCard.innerHTML = resultHtml;
+                    setTimeout(() => endGame(), 1500);
+                    return;
+                }
+
+                mainCard.innerHTML = resultHtml;
+
+                if (checkWinCondition()) return;
+
+                if (game.pendingVingadorRevenge) {
+                    return;
+                }
+
+                setTimeout(() => {
+                    proceedToNextNight();
+                }, 800);
+            }
+
+            function proceedToNextNight() {
+                game.phase = 'night';
+                game.round++;
+                game.nightStep = 0;
+                game.nightTargets = {};
+                game.eliminatedTonight = [];
+                game.savedTonight = null;
+                game.mutedPlayer = null;
+                game.dayStep = 0;
+                addLog(`🌙 Noite ${game.round} começa...`);
+                renderGame();
+                updatePhaseIndicator();
+            }
+
+            // ──────────────────────────────────────
+            // GAME OVER
+            // ──────────────────────────────────────
+            function endGame() {
+                const mainCard = document.getElementById('gameMainCard');
+                if (mainCard) mainCard.innerHTML = '';
+
+                if (game.winner === 'bomba') {
+                    document.getElementById('gameoverIcon').textContent = '💣';
+                    document.getElementById('gameoverTitle').textContent = 'Bomba Venceu!';
+                    document.getElementById('gameoverTitle').style.color = '#e67e22';
+                    const bomba = game.players.find(p => p.role === 'bomba');
+                    document.getElementById('gameoverSubtitle').textContent = `${bomba ? bomba.name : 'A Bomba'} explodiu na votação e venceu o jogo!`;
+                } else if (game.winner === 'cidadaos') {
+                    document.getElementById('gameoverIcon').textContent = '🏆';
+                    document.getElementById('gameoverTitle').textContent = 'Cidadãos Venceram!';
+                    document.getElementById('gameoverTitle').style.color = '#2ecc71';
+                    document.getElementById('gameoverSubtitle').textContent = 'O Assassino foi eliminado. A cidade está salva!';
+                } else if (game.winner === 'assassino') {
+                    document.getElementById('gameoverIcon').textContent = '🔪';
+                    document.getElementById('gameoverTitle').textContent = 'Assassino Venceu!';
+                    document.getElementById('gameoverTitle').style.color = '#e74c3c';
+                    const assassino = game.players.find(p => p.role === 'assassino');
+                    document.getElementById('gameoverSubtitle').textContent = `${assassino ? assassino.name : 'O Assassino'} dominou a cidade!`;
+                }
+
+                const allRoles = game.players.map(p =>
+                    `${ROLE_DEFS[p.role].icon} <strong>${p.name}</strong>: ${ROLE_DEFS[p.role].name} ${p.alive ? '✅' : '💀'}`
+                ).join('<br>');
+                document.getElementById('gameoverSubtitle').innerHTML += `<br><br><span style="font-size:0.8em;color:var(--text-muted);">${allRoles}</span>`;
+
+                addLog(game.winner === 'bomba' ? '💣 Bomba venceu!' : game.winner === 'cidadaos' ? '🏆 Cidadãos venceram!' : '🔪 Assassino venceu!');
+                updateGameLog();
+                showScreen('gameover');
+
+                document.getElementById('btnRestart').onclick = () => {
+                    renderSetup();
+                    showScreen('setup');
+                };
+            }
+
+            // ──────────────────────────────────────
+            // INIT
+            // ──────────────────────────────────────
+            renderSetup();
+            showScreen('setup');
+
+            console.log('🌙 Cidade Dorme — Pronto para jogar!');
+        })();
+    </script>
+</body>
+</html>
