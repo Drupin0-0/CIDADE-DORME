@@ -3,785 +3,409 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cidade Dorme</title>
+    <title>Cidade Dorme - O Jogo da Noite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a14;
-            --bg-card: #151528;
-            --bg-card-hover: #1c1c38;
-            --text: #e0e0e8;
-            --text-muted: #8888a8;
-            --accent: #c9a84c;
-            --accent-glow: #f0d060;
-            --danger: #e74c3c;
-            --danger-glow: #ff6b6b;
-            --blue: #4a90d9;
-            --blue-glow: #6db3f0;
-            --green: #2ecc71;
-            --green-glow: #5dffa0;
-            --orange: #e67e22;
-            --orange-glow: #ffa055;
-            --purple: #9b59b6;
-            --purple-glow: #c07de0;
-            --gray: #7f8c8d;
-            --teal: #1abc9c;
-            --teal-glow: #3de0c0;
-            --border: #252540;
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            --bg: #18161a;
+            --bg-card: #242126;
+            --bg-input: #2d2a30;
+            --text: #efe7dd;
+            --text-muted: #8a8075;
+            --accent: #c4a06c;
+            --accent-dim: #c4a06c20;
+            --border: #423b34;
+            --radius: 4px;
+            --font-serif: 'Cinzel', serif;
+            --font-sans: 'Inter', sans-serif;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: var(--font);
+            font-family: var(--font-sans);
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(ellipse at 50% 0%, rgba(100, 80, 180, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 100%, rgba(40, 30, 80, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(20, 20, 60, 0.3) 0%, transparent 50%);
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle var(--dur) ease-in-out infinite;
-            animation-delay: var(--delay);
-            opacity: 0;
-        }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.6); }
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(80, 60, 40, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(40, 30, 20, 0.4) 0%, transparent 50%);
         }
 
         .app-container {
             position: relative;
             z-index: 1;
             width: 100%;
-            max-width: 500px;
-            padding: 16px;
+            max-width: 520px;
+            padding: 20px;
         }
 
-        .screen {
-            display: none;
-            animation: fadeSlideIn 0.4s ease;
+        .header-brand {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            border-bottom: 2px double var(--border);
+            padding-bottom: 20px;
         }
-        .screen.active {
+        .header-brand::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: var(--accent);
+        }
+        .moon-icon {
+            font-size: 70px;
             display: block;
+            color: var(--text);
+            filter: drop-shadow(0 0 20px rgba(196, 160, 108, 0.2));
+            margin-bottom: -10px;
         }
-        @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(20px); }
+        .logo-title {
+            font-family: var(--font-serif);
+            font-size: 3em;
+            font-weight: 700;
+            letter-spacing: 6px;
+            color: var(--text);
+            text-transform: uppercase;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+        }
+        .logo-title span { font-weight: 900; font-style: italic; color: var(--accent); }
+        .logo-subtitle {
+            font-size: 0.6em;
+            color: var(--text-muted);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-top: 8px;
+            font-weight: 300;
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+            display: inline-block;
+        }
+
+        .screen { display: none; animation: fadeSlide 0.5s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
             border-radius: var(--radius);
-            padding: 28px 24px;
-            margin-bottom: 16px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: var(--transition);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
         }
-
-        .logo-area {
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .logo-icon {
-            font-size: 56px;
-            display: block;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 20px rgba(200, 170, 80, 0.5));
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .logo-title {
-            font-size: 2.2em;
-            font-weight: 800;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, #c9a84c, #f0d060, #c9a84c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 4px 0;
-        }
-        .logo-subtitle {
-            font-size: 0.9em;
-            color: var(--text-muted);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
         h2 {
-            font-size: 1.3em;
+            font-family: var(--font-serif);
+            font-size: 1.1em;
             font-weight: 700;
-            margin-bottom: 16px;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .player-count-input-container {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent);
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
         }
 
+        .player-count-input-container { display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .player-count-input {
-            width: 120px;
-            padding: 12px;
-            background: var(--bg-card);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            color: #fff;
-            font-size: 1.2em;
-            font-weight: 700;
-            text-align: center;
-            outline: none;
-            transition: var(--transition);
-            font-family: var(--font);
+            width: 80px; padding: 12px;
+            background: var(--bg-input); border: 1px solid var(--border);
+            color: var(--text); font-size: 1.4em; font-weight: 700;
+            text-align: center; outline: none;
+            font-family: var(--font-serif);
+            border-radius: var(--radius);
         }
+        .player-count-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(196, 160, 108, 0.2); }
 
-        .player-count-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 12px rgba(200, 170, 80, 0.25);
-        }
-
-        .player-count-input::-webkit-inner-spin-button,
-        .player-count-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .player-count-input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        .player-count-label {
-            font-size: 0.9em;
-            color: var(--text-muted);
-        }
-
-        .role-toggles {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .role-toggles { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .role-toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-            user-select: none;
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 14px; border: 1px solid transparent;
+            border-radius: var(--radius); cursor: pointer;
+            transition: 0.3s ease; background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
         }
-        .role-toggle:hover {
-            border-color: #444;
-            background: var(--bg-card-hover);
-        }
-        .role-toggle.active {
-            border-color: var(--accent);
-            background: rgba(200, 170, 80, 0.08);
-        }
-        .role-toggle.disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-            pointer-events: none;
-            filter: grayscale(0.6);
-        }
-        .role-toggle.locked {
-            border-color: #3a3a55;
-            cursor: default;
-            opacity: 0.85;
-        }
-        .role-toggle-icon {
-            font-size: 1.6em;
-            width: 36px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .role-toggle-info {
-            flex: 1;
-        }
-        .role-toggle-name {
-            font-weight: 600;
-            font-size: 0.95em;
-            color: #ddd;
-        }
-        .role-toggle-desc {
-            font-size: 0.75em;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
+        .role-toggle:last-child { border-bottom: none; }
+        .role-toggle:hover { background: rgba(196, 160, 108, 0.05); }
+        .role-toggle.active { border-color: var(--accent); background: var(--accent-dim); }
+        .role-toggle.disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+        .role-toggle-icon { font-size: 1.5em; width: 35px; text-align: center; }
+        .role-toggle-info { flex: 1; }
+        .role-toggle-name { font-size: 0.95em; font-weight: 600; color: var(--text); }
+        .role-toggle-desc { font-size: 0.75em; color: var(--text-muted); }
         .role-toggle-badge {
-            font-size: 0.7em;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-size: 0.6em; padding: 4px 10px; border-radius: 20px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            border: 1px solid var(--border); color: var(--text-muted);
         }
-        .badge-locked {
-            background: rgba(100, 100, 140, 0.3);
-            color: #aaa;
-        }
-        .badge-on {
-            background: rgba(200, 170, 80, 0.2);
-            color: var(--accent-glow);
-        }
-        .badge-off {
-            background: rgba(100, 100, 120, 0.2);
-            color: #777;
-        }
+        .badge-on { border-color: var(--accent); color: var(--accent); }
+        .badge-locked { border-color: #555; color: #555; background: #222; }
 
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            letter-spacing: 0.5px;
-            width: 100%;
-            font-family: var(--font);
-            pointer-events: auto;
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 14px 32px; border-radius: var(--radius);
+            font-size: 0.85em; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;
+            cursor: pointer; border: 1px solid var(--border);
+            transition: 0.3s ease; width: 100%;
+            font-family: var(--font-serif); background: transparent; color: var(--text);
+            box-shadow: inset 0 0 0 0 var(--accent);
         }
         .btn-primary {
-            background: linear-gradient(135deg, #c9a84c, #b8942e);
-            color: #1a1a20;
-            box-shadow: 0 4px 20px rgba(200, 170, 80, 0.3);
+            background: var(--accent); color: #18161a;
+            border: 1px solid var(--accent);
         }
-        .btn-primary:hover {
-            box-shadow: 0 6px 28px rgba(200, 170, 80, 0.5);
-            transform: translateY(-2px);
-        }
-        .btn-primary:active {
-            transform: scale(0.97);
-        }
+        .btn-primary:hover { background: #d4b07c; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(196, 160, 108, 0.3); }
         .btn-danger {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            box-shadow: 0 4px 16px rgba(231, 76, 60, 0.3);
+            background: transparent; color: #d65d5d;
+            border: 1px solid rgba(214, 93, 93, 0.3);
         }
-        .btn-danger:hover {
-            box-shadow: 0 6px 24px rgba(231, 76, 60, 0.5);
-            transform: translateY(-2px);
-        }
+        .btn-danger:hover { background: rgba(214, 93, 93, 0.1); border-color: #d65d5d; }
         .btn-secondary {
-            background: var(--bg-card);
+            background: transparent; color: var(--text-muted);
             border: 1px solid var(--border);
-            color: var(--text);
         }
-        .btn-secondary:hover {
-            border-color: #555;
-            background: var(--bg-card-hover);
-        }
-        .btn-sm {
-            padding: 10px 20px;
-            font-size: 0.85em;
-            width: auto;
-            border-radius: 20px;
-        }
+        .btn-secondary:hover { color: var(--text); border-color: #666; }
+        .btn:disabled { opacity: 0.4; cursor: default; pointer-events: none; filter: grayscale(0.5); }
 
-        .name-inputs {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 16px;
-        }
         .name-input-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 4px 14px;
-            transition: var(--transition);
+            display: flex; align-items: center; gap: 12px;
+            background: var(--bg-input); border: 1px solid var(--border);
+            padding: 0 14px; border-radius: var(--radius);
+            transition: 0.3s ease; margin-bottom: 10px;
         }
-        .name-input-group:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 12px rgba(200, 170, 80, 0.15);
-        }
-        .name-input-num {
-            font-weight: 700;
-            color: var(--accent);
-            font-size: 0.9em;
-            min-width: 28px;
-            text-align: center;
-        }
+        .name-input-group:focus-within { border-color: var(--accent); }
+        .name-input-num { color: var(--text-muted); font-size: 0.8em; font-weight: 700; font-family: var(--font-serif); }
         .name-input-group input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 0.95em;
-            padding: 12px 0;
-            outline: none;
-            font-family: var(--font);
+            flex: 1; background: transparent; border: none;
+            color: var(--text); font-size: 0.95em; padding: 12px 0; outline: none;
+            font-family: var(--font-sans);
         }
-        .name-input-group input::placeholder {
-            color: #555;
-        }
+        .name-input-group input::placeholder { color: #444; }
 
         .reveal-card {
-            text-align: center;
-            padding: 40px 24px;
-            cursor: pointer;
-            position: relative;
-            min-height: 280px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
+            text-align: center; padding: 40px 20px; min-height: 280px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border: 1px solid var(--border); cursor: pointer;
+            transition: 0.3s ease; background: rgba(0,0,0,0.3);
             border-radius: var(--radius);
-            background: var(--bg-card);
-            border: 2px dashed var(--border);
+            position: relative;
         }
-        .reveal-card.revealed {
-            border-style: solid;
-            cursor: default;
+        .reveal-card::before {
+            content: '';
+            position: absolute; inset: 4px; border: 1px solid var(--border); pointer-events: none;
         }
-        .reveal-card .reveal-icon {
-            font-size: 64px;
-            transition: var(--transition);
-            margin-bottom: 12px;
-        }
-        .reveal-card .reveal-text {
-            font-size: 1.1em;
-            color: var(--text-muted);
-            transition: var(--transition);
-        }
-        .reveal-card.revealed .reveal-icon {
-            font-size: 72px;
-            animation: popIn 0.5s ease;
-        }
-        .reveal-card.revealed .reveal-text {
-            color: #fff;
-            font-size: 1.3em;
-            font-weight: 700;
-        }
-        @keyframes popIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            60% { transform: scale(1.15); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .reveal-role-name {
-            font-size: 1.8em;
-            font-weight: 800;
-            margin: 8px 0;
-            letter-spacing: 1px;
-        }
-        .reveal-role-desc {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            max-width: 300px;
-            line-height: 1.5;
-        }
-        .reveal-player-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 4px;
-        }
-        .reveal-player-name {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 16px;
-        }
+        .reveal-card.revealed { border-color: var(--accent); }
+        .reveal-card.revealed::before { border-color: var(--accent); }
+        .reveal-icon { font-size: 60px; margin-bottom: 16px; }
+        .reveal-text { color: var(--text-muted); font-size: 0.9em; letter-spacing: 2px; }
+        .reveal-role-name { font-family: var(--font-serif); font-size: 2em; font-weight: 700; letter-spacing: 2px; }
+        .reveal-sub-name { font-size: 1em; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+        .reveal-role-desc { color: var(--text-muted); font-size: 0.85em; margin-top: 6px; line-height: 1.4; }
 
         .game-phase-indicator {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 18px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.9em;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-            justify-content: center;
+            text-align: center; padding: 12px;
+            border: 1px solid var(--border); background: var(--bg-card);
+            font-weight: 700; text-transform: uppercase; letter-spacing: 4px;
+            font-size: 0.75em; margin-bottom: 20px; color: var(--text-muted);
+            font-family: var(--font-serif);
         }
-        .phase-night {
-            background: rgba(30, 30, 80, 0.6);
-            border: 1px solid #2a2a60;
-            color: #b0b0e0;
-        }
-        .phase-day {
-            background: rgba(60, 50, 20, 0.5);
-            border: 1px solid #5a4a20;
-            color: #e0c870;
-        }
+        .phase-night { color: #9ea0c0; border-color: #3a3a55; }
+        .phase-day { color: var(--accent); border-color: var(--accent-dim); }
 
-        .player-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 10px;
-            margin-bottom: 16px;
-        }
+        .player-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
         .player-chip {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 14px;
-            border-radius: 25px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            font-size: 0.9em;
-            pointer-events: auto;
+            display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+            background: rgba(255,255,255,0.02); border: 1px solid transparent;
+            cursor: pointer; font-size: 0.85em; border-radius: var(--radius);
+            transition: 0.3s ease;
         }
-        .player-chip:hover {
-            border-color: #555;
-            background: var(--bg-card-hover);
-        }
-        .player-chip.selected {
-            border-color: var(--accent);
-            background: rgba(200, 170, 80, 0.12);
-            box-shadow: 0 0 14px rgba(200, 170, 80, 0.25);
-        }
-        .player-chip.dead {
-            opacity: 0.4;
-            text-decoration: line-through;
-            pointer-events: none;
-            cursor: default;
-            filter: grayscale(0.7);
-        }
-        .player-chip .chip-icon {
-            font-size: 1.2em;
-        }
-        .player-chip .chip-name {
-            flex: 1;
-        }
+        .player-chip:hover { background: rgba(255,255,255,0.05); border-color: var(--border); }
+        .player-chip.selected { border-color: var(--accent); background: var(--accent-dim); }
+        .player-chip.dead { opacity: 0.3; text-decoration: line-through; pointer-events: none; }
+        .chip-icon { width: 25px; text-align: center; font-size: 1.1em; }
 
-        .night-step-card {
-            text-align: center;
-            padding: 30px 20px;
-            border-radius: var(--radius);
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            margin-bottom: 12px;
-        }
-        .night-step-card .step-icon {
-            font-size: 50px;
-            display: block;
-            margin-bottom: 10px;
-        }
-        .night-step-card .step-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .night-step-card .step-subtitle {
-            font-size: 0.85em;
-            color: var(--text-muted);
+        .graveyard { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+        .graveyard-chip {
+            font-size: 0.65em; padding: 2px 8px; background: rgba(0,0,0,0.6);
+            color: #666; border: 1px solid #2a2a2a; border-radius: 2px;
         }
 
         .result-banner {
-            padding: 16px 20px;
-            border-radius: var(--radius-sm);
-            text-align: center;
-            font-weight: 600;
-            margin-bottom: 12px;
-            animation: fadeSlideIn 0.5s ease;
+            padding: 14px; border: 1px solid var(--border);
+            margin-bottom: 12px; text-align: center; font-size: 0.9em;
+            background: rgba(0,0,0,0.3);
         }
-        .result-death {
-            background: rgba(231, 76, 60, 0.15);
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            color: #ff9090;
-        }
-        .result-safe {
-            background: rgba(46, 204, 113, 0.12);
-            border: 1px solid rgba(46, 204, 113, 0.35);
-            color: #80ffb0;
-        }
-        .result-info {
-            background: rgba(74, 144, 217, 0.12);
-            border: 1px solid rgba(74, 144, 217, 0.35);
-            color: #90c8ff;
-        }
-        .result-bomb-win {
-            background: rgba(230, 126, 34, 0.2);
-            border: 1px solid rgba(230, 126, 34, 0.5);
-            color: #ffb74d;
-            font-size: 1.1em;
-        }
+        .result-death { border-color: rgba(214, 93, 93, 0.4); color: #d65d5d; }
+        .result-safe { border-color: rgba(84, 204, 125, 0.4); color: #80dba0; }
+        .result-info { border-color: rgba(196, 160, 108, 0.4); color: var(--accent); }
+        .result-bomb-win { border-color: #c07830; color: #e09940; font-weight: 700; }
 
         .game-log {
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--radius-sm);
-            font-size: 0.8em;
-            color: var(--text-muted);
-            line-height: 1.6;
+            max-height: 150px; overflow-y: auto; padding: 8px;
+            background: rgba(0,0,0,0.4); font-size: 0.7em; color: var(--text-muted);
+            line-height: 1.6; border: 1px solid var(--border);
+            font-family: var(--font-sans);
         }
-        .game-log .log-entry {
-            padding: 3px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-        .game-log .log-entry:last-child {
-            border-bottom: none;
-        }
+        .log-entry { padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .log-entry:last-child { border-bottom: none; }
 
-        .gameover-card {
-            text-align: center;
-            padding: 40px 24px;
-        }
-        .gameover-icon {
-            font-size: 80px;
-            display: block;
-            animation: float 2s ease-in-out infinite;
-        }
-        .gameover-title {
-            font-size: 2em;
-            font-weight: 800;
-            margin: 12px 0;
-            letter-spacing: 1px;
-        }
-        .gameover-subtitle {
-            font-size: 1em;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        .graveyard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 8px;
-            justify-content: center;
-        }
-        .graveyard-chip {
-            font-size: 0.75em;
-            padding: 4px 12px;
-            border-radius: 15px;
-            background: rgba(0, 0, 0, 0.4);
-            color: #888;
-            border: 1px solid #333;
-        }
-
-        .mudo-banner {
-            background: rgba(127, 140, 141, 0.15);
-            border: 1px solid rgba(127, 140, 141, 0.4);
-            border-radius: var(--radius-sm);
-            padding: 10px 16px;
-            text-align: center;
-            font-size: 0.85em;
-            color: #bbb;
-            margin-bottom: 12px;
-        }
-
-        .section-label {
-            font-size: 0.7em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
+        .gameover-card { text-align: center; padding: 40px 20px; }
+        .gameover-icon { font-size: 80px; display: block; margin-bottom: 10px; }
+        .gameover-title { font-family: var(--font-serif); font-size: 2.5em; margin: 10px 0; letter-spacing: 2px; }
+        .gameover-subtitle { color: var(--text-muted); font-size: 0.9em; margin-bottom: 30px; line-height: 1.6; }
 
         @media (max-width: 400px) {
-            .card {
-                padding: 20px 14px;
-            }
-            .logo-title {
-                font-size: 1.7em;
-            }
-            .player-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 6px;
-            }
+            .logo-title { font-size: 2.2em; letter-spacing: 3px; }
+            .player-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div class="stars" id="starsContainer"></div>
-
     <div class="app-container">
-        <!-- SETUP SCREEN -->
+        
+        <div class="header-brand">
+            <span class="moon-icon">🌙</span>
+            <div class="logo-title"><span>Cidade</span> Dorme</div>
+            <div class="logo-subtitle">O Jogo da Noite</div>
+        </div>
+
         <div class="screen active" id="screen-setup">
             <div class="card">
-                <div class="logo-area">
-                    <span class="logo-icon">🌙</span>
-                    <div class="logo-title">CIDADE DORME</div>
-                    <div class="logo-subtitle">O Jogo da Noite</div>
+                <h2>+ Configuração</h2>
+                <div class="player-count-input-container">
+                    <label style="color:var(--text-muted);font-size:0.8em;letter-spacing:2px;text-transform:uppercase;">Participantes (5-12)</label>
+                    <input type="number" class="player-count-input" id="playerCountInput" min="5" max="12" value="6">
                 </div>
             </div>
 
             <div class="card">
-                <h2>👥 Quantos jogadores?</h2>
-                <div class="player-count-input-container">
-                    <span class="player-count-label">De 4 a 12:</span>
-                    <input 
-                        type="number" 
-                        class="player-count-input" 
-                        id="playerCountInput" 
-                        min="4" 
-                        max="12" 
-                        value="6"
-                        placeholder="6"
-                    >
+                <h2>Subclasses (Únicas)</h2>
+                <div class="role-toggles" id="subclassToggles"></div>
+                
+                <div style="display:flex; gap:10px; margin-top:12px;">
+                    <button class="btn btn-secondary" id="btnRandomizeSubs" style="flex:1;">🎲 Sortear</button>
                 </div>
-                <div style="text-align:center;color:var(--text-muted);font-size:0.75em;" id="playerCountHint">
-                    Digite um número entre 4 e 12
-                </div>
+                
+                <div style="text-align:center;color:var(--text-muted);font-size:0.75em;margin-top:12px;border-top:1px solid var(--border);padding-top:12px;" id="roleSummary"></div>
             </div>
 
-            <div class="card" id="rolesCard">
-                <h2>🎭 Papéis em jogo</h2>
-                <div class="role-toggles" id="roleToggles"></div>
-                <div style="text-align:center;color:var(--text-muted);font-size:0.8em;margin-top:8px;" id="roleSummary"></div>
-            </div>
-
-            <button class="btn btn-primary" id="btnStartSetup">
-                ✨ Começar Jogo
-            </button>
+            <button class="btn btn-primary" id="btnStartSetup">Distribuir Funções</button>
         </div>
 
-        <!-- NAMES SCREEN -->
         <div class="screen" id="screen-names">
             <div class="card">
-                <h2>📝 Nomes dos Jogadores</h2>
-                <p style="color:var(--text-muted);font-size:0.85em;margin-bottom:16px;">Digite o nome de cada participante:</p>
+                <h2>Jogadores</h2>
+                <p style="color:var(--text-muted);font-size:0.8em;margin-bottom:16px;text-align:center;letter-spacing:1px;">Nomeie cada participante.</p>
                 <div class="name-inputs" id="nameInputs"></div>
-                <button class="btn btn-primary" id="btnDistributeRoles">
-                    🎴 Distribuir Papéis
-                </button>
-                <button class="btn btn-secondary" style="margin-top:8px;" id="btnBackToSetup">
-                    ← Voltar
-                </button>
+                <button class="btn btn-primary" id="btnDistributeRoles">Iniciar Jogo</button>
+                <button class="btn btn-secondary" style="margin-top:8px;" id="btnBackToSetup">← Voltar</button>
             </div>
         </div>
 
-        <!-- ROLE REVEAL SCREEN -->
         <div class="screen" id="screen-reveal">
             <div class="card">
-                <div class="reveal-player-label">Jogador <span id="revealPlayerNum">1</span></div>
-                <div class="reveal-player-name" id="revealPlayerName">—</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; color:var(--text-muted); font-size:0.7em; text-transform:uppercase; letter-spacing:2px; border-bottom:1px solid var(--border); padding-bottom:10px;">
+                    <span>Jogador <span id="revealPlayerNum" style="color:var(--accent);">1</span></span>
+                    <span id="revealProgress">0 / 0</span>
+                </div>
+                <div style="text-align:center;font-size:1.3em;font-weight:600;margin-bottom:20px;border:1px solid var(--border);padding:8px;background:rgba(0,0,0,0.2);" id="revealPlayerName">—</div>
+                
                 <div class="reveal-card" id="revealCard">
                     <span class="reveal-icon">🃏</span>
-                    <span class="reveal-text">Toque para revelar seu papel</span>
+                    <span class="reveal-text">Toque para ver seu destino</span>
                     <div class="reveal-role-name" style="display:none;" id="revealRoleName"></div>
+                    <div class="reveal-sub-name" style="display:none;" id="revealSubName"></div>
                     <div class="reveal-role-desc" style="display:none;" id="revealRoleDesc"></div>
                 </div>
-                <button class="btn btn-primary" id="btnNextReveal" style="margin-top:16px;display:none;">
-                    Próximo Jogador →
-                </button>
-                <button class="btn btn-secondary" id="btnStartGameAfterReveal" style="margin-top:8px;display:none;">
-                    🌙 Começar a Noite
-                </button>
-                <div style="text-align:center;color:var(--text-muted);font-size:0.8em;margin-top:12px;" id="revealProgress"></div>
+                
+                <button class="btn btn-primary" id="btnNextReveal" style="margin-top:16px;display:none;">Próximo</button>
+                <button class="btn btn-primary" id="btnStartGameAfterReveal" style="margin-top:16px;display:none;">A Noite Começa</button>
             </div>
         </div>
 
-        <!-- GAME SCREEN -->
         <div class="screen" id="screen-game">
-            <div class="game-phase-indicator phase-night" id="phaseIndicator">
-                🌙 Fase: Noite
+            <div class="game-phase-indicator phase-night" id="phaseIndicator">🌙 Noite — Rodada 0</div>
+
+            <div class="card" id="gameMainCard"></div>
+
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:12px;">
+                    <span style="font-size:0.7em; text-transform:uppercase; letter-spacing:2px; color:var(--text-muted);">Vivos</span>
+                    <span style="font-size:0.7em; text-transform:uppercase; letter-spacing:2px; color:var(--text-muted);">🪦 Cemitério</span>
+                </div>
+                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:140px;">
+                        <div class="player-grid" id="alivePlayersGrid" style="grid-template-columns:1fr;"></div>
+                    </div>
+                    <div style="flex:1; min-width:140px;">
+                        <div class="graveyard" id="graveyard" style="flex-direction:column; gap:2px;"></div>
+                    </div>
+                </div>
+                <div class="mudo-banner" id="mudoBanner" style="display:none; margin-top:12px; padding:8px; background:rgba(255,255,255,0.02); border:1px solid var(--border); text-align:center; font-size:0.8em; color:var(--text-muted);"></div>
             </div>
 
-            <div class="card" id="gameMainCard">
-                <!-- Dynamic content -->
-            </div>
-
-            <div class="card" id="playersStatusCard">
-                <h2>👥 Jogadores Vivos</h2>
-                <div class="player-grid" id="alivePlayersGrid"></div>
-                <div class="section-label">🪦 Cemitério</div>
-                <div class="graveyard" id="graveyard"></div>
-                <div class="mudo-banner" id="mudoBanner" style="display:none;"></div>
-            </div>
-
-            <div class="card" style="padding:14px 18px;">
+            <div class="card" style="padding:12px;">
                 <details>
-                    <summary style="cursor:pointer;font-weight:600;font-size:0.9em;color:var(--text-muted);">📜 Histórico</summary>
+                    <summary style="cursor:pointer;font-size:0.75em;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;">📜 Histórico</summary>
                     <div class="game-log" id="gameLog" style="margin-top:8px;"></div>
                 </details>
             </div>
         </div>
 
-        <!-- GAME OVER SCREEN -->
         <div class="screen" id="screen-gameover">
             <div class="card gameover-card">
                 <span class="gameover-icon" id="gameoverIcon">🏆</span>
-                <div class="gameover-title" id="gameoverTitle"></div>
-                <div class="gameover-subtitle" id="gameoverSubtitle"></div>
-                <button class="btn btn-primary" id="btnRestart">
-                    🔄 Jogar Novamente
-                </button>
+                <div class="gameover-title" id="gameoverTitle">Fim de Jogo</div>
+                <div class="gameover-subtitle" id="gameoverSubtitle">O destino foi decidido.</div>
+                <button class="btn btn-primary" id="btnRestart">Nova Partida</button>
             </div>
         </div>
     </div>
 
     <script>
         (function() {
-            // ──────────────────────────────────────
-            // STARS BACKGROUND
-            // ──────────────────────────────────────
-            const starsContainer = document.getElementById('starsContainer');
-            for (let i = 0; i < 80; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                const size = Math.random() * 2.5 + 0.8;
-                star.style.width = size + 'px';
-                star.style.height = size + 'px';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.setProperty('--dur', (Math.random() * 3 + 1.5) + 's');
-                star.style.setProperty('--delay', Math.random() * 4 + 's');
-                starsContainer.appendChild(star);
-            }
+            const CLASS_DEFS = {
+                assassino: { name: 'Assassino', icon: '🔪', team: 'assassino', desc: 'Mate todos os cidadãos.' },
+                medico: { name: 'Médico', icon: '💊', team: 'cidadao', desc: 'Pode salvar uma pessoa por noite.' },
+                detetive: { name: 'Detetive', icon: '🔍', team: 'cidadao', desc: 'Investiga uma pessoa por noite.' },
+                cidadao: { name: 'Cidadão', icon: '👤', team: 'cidadao', desc: 'Vote para descobrir o Assassino.' }
+            };
 
-            // ──────────────────────────────────────
-            // DOM REFERENCES
-            // ──────────────────────────────────────
+            const SUBCLASS_DEFS = {
+                // Exclusivas do Assassino
+                eletricista: { name: 'Eletricista', icon: '⚡', restrictedTo: 'assassino', desc: 'Apagão: Médico não salva. Votação é cancelada.' },
+                mudo: { name: 'Mudo', icon: '🤫', restrictedTo: 'assassino', desc: 'Silencia um jogador na noite (não pode ser votado).' },
+                detetive_corrupto: { name: 'Detetive Corrupto', icon: '🔍', restrictedTo: 'assassino', desc: 'Investiga 2 vezes na partida (vê a classe).' },
+                
+                // Exclusiva de Cidadãos (inclui Médico e Detetive)
+                vingador: { name: 'Vingador', icon: '⚔️', restrictedTo: 'cidadao', desc: 'Se morto (não votado), leva alguém junto.' },
+                
+                // Universais (para todos)
+                amante: { name: 'Amante', icon: '💘', restrictedTo: 'universal', desc: 'Conectado a outro jogador. Um morre, o outro morre. (Vem em dupla)' },
+                prefeito: { name: 'Prefeito', icon: '🏛️', restrictedTo: 'universal', desc: 'Voto vale por 2.' },
+                bala_magica: { name: 'Bala Mágica', icon: '🔫', restrictedTo: 'universal', desc: 'Uma bala que mata qualquer um (uso único).' },
+                bomba: { name: 'Bomba', icon: '💣', restrictedTo: 'universal', desc: 'Se votado, explode e vence o jogo!' }
+            };
+
             const screens = {
                 setup: document.getElementById('screen-setup'),
                 names: document.getElementById('screen-names'),
@@ -793,31 +417,11 @@
             function showScreen(name) {
                 Object.values(screens).forEach(s => s.classList.remove('active'));
                 screens[name].classList.add('active');
-                screens[name].style.animation = 'none';
-                screens[name].offsetHeight;
-                screens[name].style.animation = 'fadeSlideIn 0.4s ease';
             }
-
-            // ──────────────────────────────────────
-            // GAME STATE
-            // ──────────────────────────────────────
-            const ROLE_DEFS = {
-                assassino: { name: 'Assassino', icon: '🔪', color: '#e74c3c', desc: 'A cada noite, escolha uma pessoa para eliminar.' },
-                detetive: { name: 'Detetive', icon: '🔍', color: '#4a90d9', desc: 'A cada noite, investigue um jogador.' },
-                medico: { name: 'Médico', icon: '💊', color: '#2ecc71', desc: 'A cada noite, escolha um jogador para salvar.' },
-                bomba: { name: 'Bomba', icon: '💣', color: '#e67e22', desc: 'Se for eliminado na votação, você VENCE o jogo!' },
-                vingador: { name: 'Vingador', icon: '⚔️', color: '#9b59b6', desc: 'Ao morrer, escolha imediatamente alguém para levar junto!' },
-                mudo: { name: 'Mudo', icon: '🤫', color: '#7f8c8d', desc: 'A cada noite, escolha um jogador para ficar mudo no dia seguinte.' },
-                cidadao: { name: 'Cidadão', icon: '👤', color: '#1abc9c', desc: 'Cidadão comum. Vote para eliminar o Assassino.' },
-            };
-
-            const LOCKED_ROLES = ['assassino', 'detetive', 'medico'];
-            const OPTIONAL_ROLES = ['bomba', 'vingador', 'mudo'];
-            const OPTIONAL_MIN_PLAYERS = 6;
 
             let game = {
                 playerCount: 6,
-                activeOptionalRoles: [],
+                selectedSubclasses: [],
                 players: [],
                 currentRevealIndex: 0,
                 revealed: false,
@@ -833,46 +437,24 @@
                 round: 0,
                 winner: null,
                 pendingVingadorRevenge: false,
+                isBlackout: false,
+                detetiveUses: {},
+                eletricistaUsed: false,
+                balaMagicaUsed: false,
+                lovers: [],
+                amanteDeathTriggered: false,
             };
 
-            function getConfiguredRoles() {
-                const roles = [...LOCKED_ROLES];
-                for (const r of OPTIONAL_ROLES) {
-                    if (game.activeOptionalRoles.includes(r)) roles.push(r);
-                }
-                const cidadaoCount = game.playerCount - roles.length;
-                for (let i = 0; i < cidadaoCount; i++) roles.push('cidadao');
-                return roles;
-            }
+            function shuffleArray(arr) { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
-            function shuffleArray(arr) {
-                const a = [...arr];
-                for (let i = a.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [a[i], a[j]] = [a[j], a[i]];
-                }
-                return a;
-            }
-
-            function getAlivePlayers() {
-                return game.players.filter(p => p.alive);
-            }
-
-            function getDeadPlayers() {
-                return game.players.filter(p => !p.alive);
-            }
-
-            function getPlayerByRole(role) {
-                return game.players.find(p => p.role === role && p.alive);
-            }
-
-            function getAssassino() {
-                return game.players.find(p => p.role === 'assassino');
-            }
-
-            function getMudo() {
-                return game.players.find(p => p.role === 'mudo' && p.alive);
-            }
+            function getAlivePlayers() { return game.players.filter(p => p.alive); }
+            function getDeadPlayers() { return game.players.filter(p => !p.alive); }
+            function getPlayerByRole(role) { return game.players.find(p => p.role === role && p.alive); }
+            function getAssassino() { return getPlayerByRole('assassino'); }
+            function getMedico() { return getPlayerByRole('medico'); }
+            function getMudo() { return game.players.find(p => p.subclass === 'mudo' && p.alive); }
+            function getEletricista() { return game.players.find(p => p.subclass === 'eletricista' && p.alive); }
+            function getAmantes() { return game.players.filter(p => p.subclass === 'amante' && p.alive); }
 
             function addLog(msg) {
                 game.gameLog.push(`[Rodada ${game.round}] ${msg}`);
@@ -881,56 +463,69 @@
 
             function checkWinCondition() {
                 const alive = getAlivePlayers();
-                const aliveAssassinos = alive.filter(p => p.role === 'assassino');
-                const aliveNonAssassinos = alive.filter(p => p.role !== 'assassino');
-
-                if (aliveAssassinos.length === 0) {
-                    game.winner = 'cidadaos';
-                    game.phase = 'gameover';
-                    endGame();
-                    return true;
-                }
-                if (aliveAssassinos.length >= aliveNonAssassinos.length) {
+                const assassinos = alive.filter(p => p.role === 'assassino');
+                const cidadaos = alive.filter(p => p.role !== 'assassino');
+                const amantesVivos = alive.filter(p => p.subclass === 'amante');
+                
+                if (assassinos.length > 0 && cidadaos.length === 0) {
                     game.winner = 'assassino';
                     game.phase = 'gameover';
                     endGame();
                     return true;
                 }
+
+                if (assassinos.length === 0 && cidadaos.length > 0) {
+                    game.winner = 'cidadaos';
+                    game.phase = 'gameover';
+                    endGame();
+                    return true;
+                }
+
+                if (amantesVivos.length > 0 && assassinos.length > 0 && cidadaos.length === 0) {
+                    game.winner = 'amantes';
+                    game.phase = 'gameover';
+                    endGame();
+                    return true;
+                }
+
                 return false;
             }
 
-            function killPlayer(player, cause, triggerVingador = true) {
+            function killPlayer(player, cause, triggerVingador = true, isVote = false) {
                 if (!player.alive) return;
                 player.alive = false;
-                addLog(`${player.name} (${ROLE_DEFS[player.role].name}) foi eliminado(a) — ${cause}`);
+                addLog(`${player.name} (${CLASS_DEFS[player.role].name}${player.subclass ? ' - ' + SUBCLASS_DEFS[player.subclass].name : ''}) foi eliminado(a) — ${cause}`);
 
-                // Vingador revenge - immediate
-                if (triggerVingador && player.role === 'vingador') {
+                if (game.lovers.includes(player.name)) {
+                    const otherLover = game.players.find(p => p.subclass === 'amante' && p.alive && p.name !== player.name);
+                    if (otherLover && !game.amanteDeathTriggered) {
+                        game.amanteDeathTriggered = true;
+                        addLog(`💘 ${player.name} morreu. ${otherLover.name} também sente a dor...`);
+                        killPlayer(otherLover, 'Amante (Morte Conectada)', false, false);
+                        game.amanteDeathTriggered = false;
+                    }
+                }
+
+                if (triggerVingador && player.subclass === 'vingador' && !isVote && player.role !== 'assassino') {
                     triggerVingadorRevenge(player);
                 }
             }
 
             function triggerVingadorRevenge(vingadorPlayer) {
                 const aliveOthers = getAlivePlayers().filter(p => p.name !== vingadorPlayer.name);
-                if (aliveOthers.length === 0) {
-                    addLog('⚔️ Vingador morreu, mas não há ninguém para se vingar.');
-                    return;
-                }
+                if (aliveOthers.length === 0) return;
 
                 game.pendingVingadorRevenge = true;
-                
-                // Show revenge selection immediately
                 const mainCard = document.getElementById('gameMainCard');
                 mainCard.innerHTML = `
-                    <div class="night-step-card">
-                        <span class="step-icon">⚔️</span>
-                        <div class="step-title">Vingança do Vingador!</div>
-                        <div class="step-subtitle">${vingadorPlayer.name} morreu e pode levar alguém junto!</div>
+                    <div style="text-align:center; padding:20px; border:1px solid var(--border); margin-bottom:16px; background:rgba(0,0,0,0.3);">
+                        <div style="font-size:2.5em;">⚔️</div>
+                        <div style="font-weight:700; margin:4px 0; font-family:var(--font-serif);">Vingança!</div>
+                        <div style="color:var(--text-muted); font-size:0.85em;">${vingadorPlayer.name} foi morto e pode levar alguém junto.</div>
                     </div>
-                    <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione o alvo da vingança:</p>
-                    <div class="player-grid" id="vingadorRevengeGrid"></div>
-                    <button class="btn btn-danger" id="btnConfirmRevenge" disabled>⚔️ Confirmar Vingança</button>
-                    <button class="btn btn-secondary btn-sm" style="margin-top:8px;display:block;margin-left:auto;margin-right:auto;" id="btnSkipRevenge">Pular (não se vingar)</button>
+                    <div class="player-grid" id="vingadorRevengeGrid" style="grid-template-columns:1fr;"></div>
+                    <button class="btn btn-danger" id="btnConfirmRevenge" disabled>Confirmar Vingança</button>
+                    <button class="btn btn-secondary" style="margin-top:8px;" id="btnSkipRevenge">Perdoar</button>
                 `;
 
                 const grid = document.getElementById('vingadorRevengeGrid');
@@ -940,16 +535,11 @@
                 aliveOthers.forEach(p => {
                     const chip = document.createElement('div');
                     chip.className = 'player-chip';
-                    chip.dataset.playerId = p.name;
-                    chip.innerHTML = `
-                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
-                        <span class="chip-name">${p.name}</span>
-                    `;
+                    chip.innerHTML = `<span class="chip-icon">${CLASS_DEFS[p.role].icon}</span> ${p.name}`;
                     chip.onclick = () => {
                         grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
                         chip.classList.add('selected');
-                        selected = p.name;
-                        btn.disabled = false;
+                        selected = p.name; btn.disabled = false;
                     };
                     grid.appendChild(chip);
                 });
@@ -958,759 +548,609 @@
                     if (!selected) return;
                     const target = game.players.find(p => p.name === selected && p.alive);
                     if (target) {
-                        killPlayer(target, 'Vingança do Vingador', false);
-                        addLog(`⚔️ ${vingadorPlayer.name} levou ${target.name} junto na vingança!`);
-                        
-                        game.pendingVingadorRevenge = false;
-                        
-                        if (checkWinCondition()) return;
+                        killPlayer(target, 'Vingança', false, false);
+                        addLog(`⚔️ ${vingadorPlayer.name} levou ${target.name} junto!`);
                     }
-                    
-                    // Continue with the game flow
-                    if (game.phase === 'night') {
-                        game.nightStep++;
-                        renderGame();
-                    } else if (game.phase === 'day') {
-                        proceedToNextNight();
-                    }
-                };
-
-                document.getElementById('btnSkipRevenge').onclick = () => {
-                    addLog('⚔️ Vingador decidiu não se vingar.');
                     game.pendingVingadorRevenge = false;
-                    
-                    if (game.phase === 'night') {
-                        game.nightStep++;
-                        renderGame();
-                    } else if (game.phase === 'day') {
-                        proceedToNextNight();
-                    }
+                    if (checkWinCondition()) return;
+                    if (game.phase === 'night') { game.nightStep++; renderGame(); } 
+                    else if (game.phase === 'day') proceedToNextNight();
                 };
-
-                updateAlivePlayersGrid();
-                updateGraveyard();
+                
+                document.getElementById('btnSkipRevenge').onclick = () => {
+                    game.pendingVingadorRevenge = false;
+                    if (game.phase === 'night') { game.nightStep++; renderGame(); } 
+                    else if (game.phase === 'day') proceedToNextNight();
+                };
+                updateAlivePlayersGrid(); updateGraveyard();
             }
 
-            // ──────────────────────────────────────
-            // SETUP SCREEN
-            // ──────────────────────────────────────
             function renderSetup() {
-                game.playerCount = 6;
-                game.activeOptionalRoles = [];
-                game.players = [];
-                game.currentRevealIndex = 0;
-                game.revealed = false;
-                game.phase = 'setup';
-                game.nightStep = 0;
-                game.dayStep = 0;
-                game.nightTargets = {};
-                game.lastSavedPlayer = null;
-                game.mutedPlayer = null;
-                game.eliminatedTonight = [];
-                game.savedTonight = null;
-                game.gameLog = [];
-                game.round = 0;
-                game.winner = null;
-                game.pendingVingadorRevenge = false;
+                game.playerCount = 6; game.selectedSubclasses = [];
+                game.players = []; game.currentRevealIndex = 0; game.revealed = false;
+                game.phase = 'setup'; game.nightStep = 0; game.dayStep = 0;
+                game.nightTargets = {}; game.lastSavedPlayer = null; game.mutedPlayer = null;
+                game.eliminatedTonight = []; game.savedTonight = null; game.gameLog = [];
+                game.round = 0; game.winner = null; game.pendingVingadorRevenge = false;
+                game.isBlackout = false;
+                game.detetiveUses = {}; game.eletricistaUsed = false; game.balaMagicaUsed = false;
+                game.lovers = []; game.amanteDeathTriggered = false;
 
-                // Set up player count input
-                const playerCountInput = document.getElementById('playerCountInput');
-                playerCountInput.value = 6;
-                playerCountInput.oninput = function() {
-                    let value = parseInt(this.value);
-                    if (isNaN(value) || value < 4) {
-                        this.value = 4;
-                        game.playerCount = 4;
-                    } else if (value > 12) {
-                        this.value = 12;
-                        game.playerCount = 12;
-                    } else {
-                        game.playerCount = value;
-                    }
-                    updateRoleToggles();
-                    updateRoleSummary();
+                const input = document.getElementById('playerCountInput');
+                input.value = 6;
+                input.oninput = function() {
+                    let val = parseInt(this.value);
+                    if (isNaN(val) || val < 5) val = 5; if (val > 12) val = 12;
+                    game.playerCount = val; this.value = val;
+                    updateSubclassToggles(); updateRoleSummary();
                 };
+                updateSubclassToggles(); updateRoleSummary();
                 
-                updateRoleToggles();
-                updateRoleSummary();
-                
+                document.getElementById('btnRandomizeSubs').onclick = () => {
+                    const allSubs = Object.keys(SUBCLASS_DEFS);
+                    const shuffled = shuffleArray(allSubs);
+                    let selected = [];
+                    let availableSlots = Math.min(game.playerCount, shuffled.length);
+                    
+                    for(let i=0; i<availableSlots; i++) {
+                        let sub = shuffled[i];
+                        if (sub === 'amante') {
+                            // Se amante for sorteado, ele ocupa 2 slots
+                            if (i + 1 < availableSlots) {
+                                selected.push('amante');
+                                selected.push('amante'); // Adiciona o segundo amante
+                                i++; // Pula o próximo slot
+                            }
+                        } else {
+                            selected.push(sub);
+                        }
+                    }
+                    game.selectedSubclasses = selected;
+                    updateSubclassToggles(); updateRoleSummary();
+                };
+
                 document.getElementById('btnStartSetup').onclick = () => {
-                    if (game.playerCount < 4 || game.playerCount > 12) {
-                        alert('Digite um número de jogadores entre 4 e 12.');
-                        return;
+                    if (game.playerCount < 5 || game.playerCount > 12) return alert('Mínimo 5 jogadores.');
+
+                    let classes = [];
+                    classes.push('assassino', 'medico', 'detetive');
+                    let cidadaoCount = game.playerCount - 3;
+                    for(let i=0; i<cidadaoCount; i++) classes.push('cidadao');
+                    classes = shuffleArray(classes);
+                    
+                    let subMap = new Array(game.playerCount).fill(null);
+                    let availableSubs = shuffleArray([...game.selectedSubclasses]);
+                    let subIndex = 0;
+                    
+                    for(let i=0; i<game.playerCount; i++) {
+                        if (subIndex < availableSubs.length) {
+                            let subclass = availableSubs[subIndex];
+                            let def = SUBCLASS_DEFS[subclass];
+                            
+                            // Verifica restrição
+                            // Se for 'assassino', só pode receber as restritas a ele
+                            // Se for 'cidadao', 'medico' ou 'detetive', pode receber 'cidadao' ou 'universal'
+                            if (classes[i] === 'assassino') {
+                                if (def.restrictedTo !== 'assassino') {
+                                    // Tenta achar uma subclasse que sirva para assassino
+                                    let found = false;
+                                    for(let j=subIndex+1; j<availableSubs.length; j++) {
+                                        let altSub = availableSubs[j];
+                                        let altDef = SUBCLASS_DEFS[altSub];
+                                        if (altDef.restrictedTo === 'assassino') {
+                                            [availableSubs[subIndex], availableSubs[j]] = [availableSubs[j], availableSubs[subIndex]];
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found) {
+                                        subIndex++;
+                                        continue;
+                                    }
+                                }
+                            } else {
+                                // Médico, Detetive ou Cidadão (não é assassino)
+                                if (def.restrictedTo === 'assassino') {
+                                    // Se a subclasse for apenas de assassino, pula
+                                    let found = false;
+                                    for(let j=subIndex+1; j<availableSubs.length; j++) {
+                                        let altSub = availableSubs[j];
+                                        let altDef = SUBCLASS_DEFS[altSub];
+                                        if (altDef.restrictedTo !== 'assassino') {
+                                            [availableSubs[subIndex], availableSubs[j]] = [availableSubs[j], availableSubs[subIndex]];
+                                            found = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!found) {
+                                        subIndex++;
+                                        continue;
+                                    }
+                                }
+                            }
+                            
+                            subMap[i] = availableSubs[subIndex];
+                            subIndex++;
+                        }
                     }
-                    const configured = getConfiguredRoles();
-                    if (configured.length !== game.playerCount) {
-                        alert('Erro na configuração dos papéis. Ajuste as opções.');
-                        return;
-                    }
-                    game.phase = 'names';
-                    renderNames();
-                    showScreen('names');
+
+                    game.selectedClasses = classes;
+                    game.selectedSubclasses = subMap;
+                    
+                    game.phase = 'names'; renderNames(); showScreen('names');
                 };
-                
                 showScreen('setup');
             }
 
-            function updateRoleToggles() {
-                const container = document.getElementById('roleToggles');
-                container.innerHTML = '';
+            function updateSubclassToggles() {
+                const container = document.getElementById('subclassToggles'); container.innerHTML = '';
+                
+                // Categorias para organizar visualmente
+                const categories = {
+                    '🔪 Exclusivas do Assassino': ['eletricista', 'mudo', 'detetive_corrupto'],
+                    '👤 Para Cidadãos, Médicos e Detetives': ['vingador'],
+                    '🌍 Universais (Todos)': ['amante', 'prefeito', 'bala_magica', 'bomba']
+                };
 
-                const canUseOptional = game.playerCount >= OPTIONAL_MIN_PLAYERS;
+                Object.entries(categories).forEach(([categoryName, keys]) => {
+                    // Adiciona um subtítulo visual
+                    const subtitle = document.createElement('div');
+                    subtitle.style.cssText = 'font-size: 0.8em; color: var(--text-muted); margin-top: 10px; margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase;';
+                    subtitle.textContent = categoryName;
+                    container.appendChild(subtitle);
 
-                for (const roleKey of LOCKED_ROLES) {
-                    const def = ROLE_DEFS[roleKey];
-                    const div = document.createElement('div');
-                    div.className = 'role-toggle locked';
-                    div.innerHTML = `
-                        <span class="role-toggle-icon">${def.icon}</span>
-                        <div class="role-toggle-info">
-                            <div class="role-toggle-name">${def.name}</div>
-                            <div class="role-toggle-desc">${def.desc}</div>
-                        </div>
-                        <span class="role-toggle-badge badge-locked">OBRIGATÓRIO</span>
-                    `;
-                    container.appendChild(div);
-                }
-
-                for (const roleKey of OPTIONAL_ROLES) {
-                    const def = ROLE_DEFS[roleKey];
-                    const isActive = game.activeOptionalRoles.includes(roleKey);
-                    const div = document.createElement('div');
-                    div.className = 'role-toggle' + (isActive ? ' active' : '') + (!canUseOptional ? ' disabled' : '');
-                    div.innerHTML = `
-                        <span class="role-toggle-icon">${def.icon}</span>
-                        <div class="role-toggle-info">
-                            <div class="role-toggle-name">${def.name}</div>
-                            <div class="role-toggle-desc">${def.desc}</div>
-                        </div>
-                        <span class="role-toggle-badge ${isActive ? 'badge-on' : 'badge-off'}">${isActive ? 'ATIVO' : canUseOptional ? 'INATIVO' : '6+ JOGADORES'}</span>
-                    `;
-                    
-                    if (canUseOptional) {
-                        div.onclick = function() {
-                            if (isActive) {
-                                game.activeOptionalRoles = game.activeOptionalRoles.filter(r => r !== roleKey);
-                            } else {
-                                game.activeOptionalRoles.push(roleKey);
-                            }
-                            updateRoleToggles();
-                            updateRoleSummary();
-                        };
-                    }
-                    container.appendChild(div);
-                }
+                    keys.forEach(key => {
+                        const def = SUBCLASS_DEFS[key];
+                        const isActive = game.selectedSubclasses.includes(key);
+                        const div = document.createElement('div');
+                        
+                        div.className = `role-toggle ${isActive ? 'active' : ''}`;
+                        div.innerHTML = `
+                            <span class="role-toggle-icon">${def.icon}</span>
+                            <div class="role-toggle-info">
+                                <div class="role-toggle-name">${def.name}</div>
+                                <div class="role-toggle-desc">${def.desc}</div>
+                            </div>
+                            <span class="role-toggle-badge ${isActive ? 'badge-on' : ''}">${isActive ? 'ATIVO' : 'INATIVO'}</span>
+                        `;
+                        
+                        // Lógica especial para Amantes (sempre em dupla)
+                        if (key === 'amante') {
+                            div.onclick = () => {
+                                const currentAmantes = game.selectedSubclasses.filter(s => s === 'amante').length;
+                                const availableSlots = game.playerCount - game.selectedSubclasses.length + currentAmantes;
+                                
+                                if (isActive) {
+                                    // Remove os dois amantes
+                                    let newList = [...game.selectedSubclasses];
+                                    let removed = 0;
+                                    newList = newList.filter(s => {
+                                        if (s === 'amante' && removed < 2) { removed++; return false; }
+                                        return true;
+                                    });
+                                    game.selectedSubclasses = newList;
+                                } else {
+                                    // Adiciona os dois amantes se houver espaço
+                                    if (availableSlots >= 2) {
+                                        game.selectedSubclasses.push('amante');
+                                        game.selectedSubclasses.push('amante');
+                                    } else {
+                                        alert('Não há espaço suficiente para uma dupla de Amantes!');
+                                    }
+                                }
+                                updateSubclassToggles(); updateRoleSummary();
+                            };
+                        } else {
+                            div.onclick = () => {
+                                if (isActive) game.selectedSubclasses = game.selectedSubclasses.filter(r => r !== key);
+                                else game.selectedSubclasses.push(key);
+                                updateSubclassToggles(); updateRoleSummary();
+                            };
+                        }
+                        
+                        container.appendChild(div);
+                    });
+                });
             }
 
             function updateRoleSummary() {
                 const summary = document.getElementById('roleSummary');
-                const configured = getConfiguredRoles();
-                const counts = {};
-                for (const r of configured) {
-                    counts[r] = (counts[r] || 0) + 1;
+                let parts = [];
+                if(game.selectedSubclasses.length > 0) {
+                    // Conta os amantes para exibir corretamente
+                    const counts = {};
+                    game.selectedSubclasses.forEach(s => counts[s] = (counts[s] || 0) + 1);
+                    const displayList = Object.keys(counts).map(key => {
+                        if (key === 'amante') return `${SUBCLASS_DEFS[key].icon} (x${counts[key]})`;
+                        return SUBCLASS_DEFS[key].icon;
+                    });
+                    parts.push(`Subclasses: ${displayList.join(' ')}`);
                 }
-                const parts = [];
-                for (const [role, count] of Object.entries(counts)) {
-                    parts.push(`${count}x ${ROLE_DEFS[role].icon} ${ROLE_DEFS[role].name}`);
-                }
-                summary.textContent = `Total: ${game.playerCount} jogadores · ${parts.join(' · ')}`;
+                summary.textContent = `Total: ${game.playerCount} jog. | ${parts.join(' | ')}`;
             }
 
-            // ──────────────────────────────────────
-            // NAMES SCREEN
-            // ──────────────────────────────────────
             function renderNames() {
-                const container = document.getElementById('nameInputs');
-                container.innerHTML = '';
+                const container = document.getElementById('nameInputs'); container.innerHTML = '';
                 for (let i = 0; i < game.playerCount; i++) {
-                    const group = document.createElement('div');
-                    group.className = 'name-input-group';
-                    group.innerHTML = `
-                        <span class="name-input-num">#${i + 1}</span>
-                        <input type="text" placeholder="Nome do jogador ${i + 1}" data-index="${i}" maxlength="20">
-                    `;
+                    const group = document.createElement('div'); group.className = 'name-input-group';
+                    group.innerHTML = `<span class="name-input-num">#${i+1}</span><input type="text" placeholder="Nome ${i+1}" data-index="${i}" maxlength="20">`;
                     container.appendChild(group);
                 }
-                
                 document.getElementById('btnDistributeRoles').onclick = () => {
                     const inputs = container.querySelectorAll('input');
-                    const names = [];
-                    let allFilled = true;
-                    inputs.forEach(inp => {
-                        const name = inp.value.trim();
-                        if (!name) allFilled = false;
-                        names.push(name || `Jogador ${parseInt(inp.dataset.index) + 1}`);
-                    });
-                    if (!allFilled) {
-                        if (!confirm('Alguns nomes estão vazios. Serão usados nomes padrão. Continuar?')) return;
-                    }
+                    const names = Array.from(inputs).map((inp, i) => inp.value.trim() || `Jogador ${i+1}`);
                     
-                    const configuredRoles = getConfiguredRoles();
-                    const shuffledRoles = shuffleArray(configuredRoles);
-                    game.players = names.map((name, i) => ({
-                        name,
-                        role: shuffledRoles[i],
-                        alive: true,
+                    game.players = names.map((n, i) => ({ 
+                        name: n, 
+                        role: game.selectedClasses[i % game.selectedClasses.length], 
+                        subclass: game.selectedSubclasses[i % game.selectedSubclasses.length],
+                        alive: true 
                     }));
-                    game.currentRevealIndex = 0;
-                    game.revealed = false;
-                    game.phase = 'reveal';
-                    renderReveal();
-                    showScreen('reveal');
+
+                    const amantes = game.players.filter(p => p.subclass === 'amante');
+                    if (amantes.length >= 2) {
+                        game.lovers = [amantes[0].name, amantes[1].name];
+                        addLog(`💘 ${amantes[0].name} e ${amantes[1].name} estão apaixonados!`);
+                    }
+
+                    game.players.filter(p => p.subclass === 'detetive_corrupto').forEach(p => {
+                        game.detetiveUses[p.name] = 2;
+                    });
+
+                    game.currentRevealIndex = 0; game.revealed = false; game.phase = 'reveal';
+                    renderReveal(); showScreen('reveal');
                 };
-                
-                document.getElementById('btnBackToSetup').onclick = () => {
-                    game.phase = 'setup';
-                    renderSetup();
-                    showScreen('setup');
-                };
+                document.getElementById('btnBackToSetup').onclick = () => { game.phase = 'setup'; renderSetup(); };
             }
 
-            // ──────────────────────────────────────
-            // ROLE REVEAL SCREEN
-            // ──────────────────────────────────────
             function renderReveal() {
-                const idx = game.currentRevealIndex;
-                const player = game.players[idx];
+                const idx = game.currentRevealIndex; const player = game.players[idx];
                 document.getElementById('revealPlayerNum').textContent = idx + 1;
                 document.getElementById('revealPlayerName').textContent = player.name;
-                document.getElementById('revealProgress').textContent = `Jogador ${idx + 1} de ${game.players.length}`;
+                document.getElementById('revealProgress').textContent = `${idx + 1} / ${game.players.length}`;
 
-                const card = document.getElementById('revealCard');
-                card.classList.remove('revealed');
-                card.querySelector('.reveal-icon').textContent = '🃏';
-                card.querySelector('.reveal-icon').style.display = '';
-                card.querySelector('.reveal-text').textContent = 'Toque para revelar seu papel';
-                card.querySelector('.reveal-text').style.display = '';
-                card.querySelector('.reveal-role-name').style.display = 'none';
+                const card = document.getElementById('revealCard'); card.classList.remove('revealed');
+                card.querySelector('.reveal-icon').textContent = '🃏'; card.querySelector('.reveal-icon').style.display = '';
+                card.querySelector('.reveal-text').textContent = 'Toque para ver seu destino'; card.querySelector('.reveal-text').style.display = '';
+                card.querySelector('.reveal-role-name').style.display = 'none'; card.querySelector('.reveal-sub-name').style.display = 'none';
                 card.querySelector('.reveal-role-desc').style.display = 'none';
-                card.style.borderColor = '';
-                card.style.boxShadow = '';
-
-                document.getElementById('btnNextReveal').style.display = 'none';
-                document.getElementById('btnStartGameAfterReveal').style.display = 'none';
+                document.getElementById('btnNextReveal').style.display = 'none'; document.getElementById('btnStartGameAfterReveal').style.display = 'none';
                 game.revealed = false;
 
                 card.onclick = () => {
-                    if (game.revealed) return;
-                    game.revealed = true;
-                    const def = ROLE_DEFS[player.role];
-                    card.classList.add('revealed');
-                    card.querySelector('.reveal-icon').textContent = def.icon;
+                    if (game.revealed) return; game.revealed = true;
+                    const defC = CLASS_DEFS[player.role];
+                    const defS = player.subclass ? SUBCLASS_DEFS[player.subclass] : null;
+                    
+                    card.classList.add('revealed'); 
+                    card.querySelector('.reveal-icon').textContent = defC.icon;
                     card.querySelector('.reveal-text').style.display = 'none';
-                    const roleNameEl = card.querySelector('.reveal-role-name');
-                    roleNameEl.textContent = def.name;
-                    roleNameEl.style.display = '';
-                    roleNameEl.style.color = def.color;
-                    const roleDescEl = card.querySelector('.reveal-role-desc');
-                    roleDescEl.textContent = def.desc;
-                    roleDescEl.style.display = '';
-                    card.style.borderColor = def.color;
-                    card.style.boxShadow = `0 0 30px ${def.color}33`;
-
-                    if (idx < game.players.length - 1) {
-                        document.getElementById('btnNextReveal').style.display = '';
-                    } else {
-                        document.getElementById('btnStartGameAfterReveal').style.display = '';
-                    }
+                    
+                    const rn = card.querySelector('.reveal-role-name'); 
+                    rn.textContent = `${defC.name} ${defS ? '· ' + defS.icon : ''}`; 
+                    rn.style.display = ''; 
+                    rn.style.color = defC.team === 'assassino' ? '#d65d5d' : '#80dba0';
+                    
+                    const sn = card.querySelector('.reveal-sub-name');
+                    if(defS) { sn.textContent = `Subclasse: ${defS.name}`; sn.style.display = ''; } else { sn.style.display = 'none'; }
+                    
+                    const rd = card.querySelector('.reveal-role-desc'); 
+                    rd.innerHTML = `${defC.desc}${defS ? `<br><br>🛠️ <strong>Poder:</strong> ${defS.desc}` : ''}`;
+                    rd.style.display = '';
+                    
+                    document.getElementById(idx < game.players.length - 1 ? 'btnNextReveal' : 'btnStartGameAfterReveal').style.display = '';
                 };
-
-                document.getElementById('btnNextReveal').onclick = () => {
-                    game.currentRevealIndex++;
-                    game.revealed = false;
-                    renderReveal();
-                };
-                
+                document.getElementById('btnNextReveal').onclick = () => { game.currentRevealIndex++; renderReveal(); };
                 document.getElementById('btnStartGameAfterReveal').onclick = () => {
-                    game.phase = 'night';
-                    game.round = 1;
-                    game.nightStep = 0;
-                    game.nightTargets = {};
-                    game.mutedPlayer = null;
-                    game.eliminatedTonight = [];
-                    game.savedTonight = null;
-                    game.lastSavedPlayer = null;
+                    game.phase = 'night'; game.round = 1; game.nightStep = 0; game.nightTargets = {}; game.mutedPlayer = null;
+                    game.isBlackout = false;
                     addLog('🌙 A primeira noite começa...');
-                    renderGame();
-                    showScreen('game');
+                    renderGame(); showScreen('game');
                 };
             }
 
-            // ──────────────────────────────────────
-            // GAME SCREEN
-            // ──────────────────────────────────────
             function renderGame() {
-                updatePhaseIndicator();
-                updateAlivePlayersGrid();
-                updateGraveyard();
-                updateMudoBanner();
-                updateGameLog();
-
+                updatePhaseIndicator(); updateAlivePlayersGrid(); updateGraveyard(); updateMudoBanner(); updateGameLog();
                 const mainCard = document.getElementById('gameMainCard');
-
-                if (game.phase === 'night') {
-                    renderNightPhase(mainCard);
-                } else if (game.phase === 'day') {
-                    renderDayPhase(mainCard);
-                }
+                if (game.phase === 'night') renderNightPhase(mainCard);
+                else if (game.phase === 'day') renderDayPhase(mainCard);
             }
 
             function updatePhaseIndicator() {
                 const el = document.getElementById('phaseIndicator');
-                if (game.phase === 'night') {
-                    el.className = 'game-phase-indicator phase-night';
-                    el.innerHTML = `🌙 Fase: Noite — Rodada ${game.round}`;
-                } else if (game.phase === 'day') {
-                    el.className = 'game-phase-indicator phase-day';
-                    el.innerHTML = `☀️ Fase: Dia — Rodada ${game.round}`;
-                }
+                el.className = `game-phase-indicator ${game.phase === 'night' ? 'phase-night' : 'phase-day'}`;
+                el.innerHTML = game.phase === 'night' ? `🌙 Noite — Rodada ${game.round}` : `☀️ Dia — Rodada ${game.round}`;
             }
-
             function updateAlivePlayersGrid() {
-                const grid = document.getElementById('alivePlayersGrid');
-                const alive = getAlivePlayers();
-                grid.innerHTML = '';
-                alive.forEach(p => {
-                    const chip = document.createElement('div');
-                    chip.className = 'player-chip';
-                    chip.dataset.playerId = p.name;
-                    chip.innerHTML = `
-                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
-                        <span class="chip-name">${p.name}</span>
-                    `;
+                const grid = document.getElementById('alivePlayersGrid'); grid.innerHTML = '';
+                getAlivePlayers().forEach(p => {
+                    const chip = document.createElement('div'); chip.className = 'player-chip';
+                    const classIcon = CLASS_DEFS[p.role].icon;
+                    const subIcon = p.subclass ? SUBCLASS_DEFS[p.subclass].icon : '';
+                    chip.innerHTML = `<span class="chip-icon">${classIcon} ${subIcon}</span> ${p.name}`;
                     grid.appendChild(chip);
                 });
-                if (alive.length === 0) {
-                    grid.innerHTML = '<span style="color:var(--text-muted);font-size:0.85em;">Nenhum jogador vivo.</span>';
-                }
+                if (!getAlivePlayers().length) grid.innerHTML = '<span style="color:var(--text-muted);font-size:0.8em;">Nenhum vivo</span>';
             }
-
             function updateGraveyard() {
-                const grave = document.getElementById('graveyard');
-                const dead = getDeadPlayers();
-                if (dead.length === 0) {
-                    grave.innerHTML = '<span style="color:#555;font-size:0.75em;">Vazio por enquanto...</span>';
-                } else {
-                    grave.innerHTML = dead.map(p =>
-                        `<span class="graveyard-chip">${ROLE_DEFS[p.role].icon} ${p.name} (${ROLE_DEFS[p.role].name})</span>`
-                    ).join('');
-                }
+                const grave = document.getElementById('graveyard'); const dead = getDeadPlayers();
+                grave.innerHTML = dead.length ? dead.map(p => {
+                    const classIcon = CLASS_DEFS[p.role].icon;
+                    const subIcon = p.subclass ? SUBCLASS_DEFS[p.subclass].icon : '';
+                    return `<div class="graveyard-chip">${classIcon}${subIcon} ${p.name}</div>`;
+                }).join('') : '<span style="color:#444;font-size:0.7em;">Vazio</span>';
             }
-
             function updateMudoBanner() {
                 const banner = document.getElementById('mudoBanner');
                 if (game.mutedPlayer && game.phase === 'day') {
-                    const mutedPlayer = game.players.find(p => p.name === game.mutedPlayer && p.alive);
-                    if (mutedPlayer) {
-                        banner.style.display = '';
-                        banner.innerHTML = `🤫 <strong>${mutedPlayer.name}</strong> está mudo hoje e não pode falar durante a discussão.`;
-                    } else {
-                        banner.style.display = 'none';
-                    }
-                } else {
-                    banner.style.display = 'none';
-                }
+                    const p = game.players.find(x => x.name === game.mutedPlayer && x.alive);
+                    if (p) { banner.style.display = ''; banner.innerHTML = `🤫 <strong>${p.name}</strong> está mudo hoje e não pode ser votado.`; } else banner.style.display = 'none';
+                } else banner.style.display = 'none';
             }
-
             function updateGameLog() {
                 const logEl = document.getElementById('gameLog');
-                logEl.innerHTML = game.gameLog.slice(-20).map(e => `<div class="log-entry">${e}</div>`).join('');
+                logEl.innerHTML = game.gameLog.slice(-15).map(e => `<div class="log-entry">${e}</div>`).join('');
                 logEl.scrollTop = logEl.scrollHeight;
             }
 
-            // ──────────────────────────────────────
-            // NIGHT PHASE
-            // ──────────────────────────────────────
             function renderNightPhase(mainCard) {
                 const assassino = getAssassino();
-                const assassinoAlive = assassino && assassino.alive;
+                const medico = getMedico();
                 const mudo = getMudo();
-
                 const steps = [];
-                if (assassinoAlive) steps.push('assassino');
-                steps.push('medico');
-                steps.push('detetive');
+                
+                if (assassino) steps.push('assassino');
+                if (medico && !game.isBlackout) steps.push('medico'); 
+                else if (game.isBlackout) addLog('⚡ Apagão! O Médico não acordou esta noite.');
+                
+                const detetiveCorrupto = game.players.find(p => p.subclass === 'detetive_corrupto' && p.alive);
+                if (detetiveCorrupto && game.detetiveUses[detetiveCorrupto.name] > 0) steps.push('detetive_corrupto');
+                
                 if (mudo) steps.push('mudo');
                 steps.push('resolve');
 
-                if (game.nightStep >= steps.length) {
-                    resolveNight();
-                    return;
-                }
+                if (game.nightStep >= steps.length) { resolveNight(); return; }
 
-                const currentStep = steps[game.nightStep];
-
-                if (currentStep === 'assassino') {
-                    mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">🔪</span>
-                            <div class="step-title">Assassino — Hora de Matar</div>
-                            <div class="step-subtitle">O Assassino abre os olhos e escolhe sua vítima.</div>
-                        </div>
-                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione o alvo do Assassino:</p>
-                        <div class="player-grid" id="nightSelectGrid"></div>
-                        <button class="btn btn-danger" id="btnNightAction" disabled>🔪 Confirmar Alvo</button>
-                    `;
-                    setupNightSelection('assassino', mainCard);
-                } else if (currentStep === 'medico') {
-                    mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">💊</span>
-                            <div class="step-title">Médico — Hora de Salvar</div>
-                            <div class="step-subtitle">O Médico abre os olhos e escolhe quem proteger.</div>
-                            ${game.lastSavedPlayer ? `<div class="step-subtitle" style="color:#ff9090;">⚠️ Não pode salvar <strong>${game.lastSavedPlayer}</strong> novamente.</div>` : ''}
-                        </div>
-                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem o Médico vai salvar:</p>
-                        <div class="player-grid" id="nightSelectGrid"></div>
-                        <button class="btn btn-primary" id="btnNightAction" disabled>💊 Confirmar Salvamento</button>
-                    `;
-                    setupNightSelection('medico', mainCard);
-                } else if (currentStep === 'detetive') {
-                    mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">🔍</span>
-                            <div class="step-title">Detetive — Investigação</div>
-                            <div class="step-subtitle">O Detetive abre os olhos e investiga um jogador.</div>
-                        </div>
-                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem investigar:</p>
-                        <div class="player-grid" id="nightSelectGrid"></div>
-                        <button class="btn btn-primary" id="btnNightAction" disabled>🔍 Investigar</button>
-                    `;
-                    setupNightSelection('detetive', mainCard);
-                } else if (currentStep === 'mudo') {
-                    mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">🤫</span>
-                            <div class="step-title">Mudo — Silenciar</div>
-                            <div class="step-subtitle">O Mudo escolhe quem ficará mudo durante o dia.</div>
-                        </div>
-                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Selecione quem ficará mudo amanhã:</p>
-                        <div class="player-grid" id="nightSelectGrid"></div>
-                        <button class="btn btn-primary" id="btnNightAction" disabled>🤫 Silenciar</button>
-                    `;
-                    setupNightSelection('mudo', mainCard);
-                }
-
-                updateAlivePlayersGrid();
-                updateGraveyard();
+                const role = steps[game.nightStep];
+                const titles = { 
+                    assassino: ['🔪', 'Assassino, escolha sua vítima.'], 
+                    medico: ['💊', 'Médico, quem você protege?'], 
+                    detetive_corrupto: ['🔍', 'Detetive Corrupto, quem investigar? (Usos: ' + (game.detetiveUses[detetiveCorrupto?.name] || 0) + '/2)'], 
+                    mudo: ['🤫', 'Mudo, silencie alguém.'] 
+                };
+                
+                mainCard.innerHTML = `
+                    <div style="text-align:center; padding:20px 0; margin-bottom:16px; border-bottom:1px solid var(--border);">
+                        <div style="font-size:2.5em;">${titles[role][0]}</div>
+                        <div style="font-weight:700; margin:4px 0; font-family:var(--font-serif);">${titles[role][1]}</div>
+                        ${role === 'medico' && game.lastSavedPlayer ? `<div style="color:#d65d5d;font-size:0.8em;">Não pode salvar ${game.lastSavedPlayer} novamente.</div>` : ''}
+                        ${game.isBlackout && role === 'medico' ? `<div style="color:#d65d5d;font-size:0.8em;">🔇 Apagão! Médico não acorda.</div>` : ''}
+                    </div>
+                    <div class="player-grid" id="nightSelectGrid" style="grid-template-columns:1fr 1fr;"></div>
+                    <button class="btn btn-primary" id="btnNightAction" disabled>Confirmar</button>
+                `;
+                setupNightSelection(role, mainCard);
+                updateAlivePlayersGrid(); updateGraveyard();
             }
 
             function setupNightSelection(role, mainCard) {
-                const grid = document.getElementById('nightSelectGrid');
-                const btn = document.getElementById('btnNightAction');
+                const grid = document.getElementById('nightSelectGrid'); const btn = document.getElementById('btnNightAction');
                 let selected = null;
+                
+                let availablePlayers = getAlivePlayers().filter(p => {
+                    if (role === 'assassino' && p.role === 'assassino') return false;
+                    if (role === 'mudo' && p.subclass === 'mudo') return false;
+                    if (role === 'medico' && game.lastSavedPlayer === p.name) return false;
+                    return true;
+                });
 
-                const alive = getAlivePlayers();
-                grid.innerHTML = '';
-                alive.forEach(p => {
-                    let disabled = false;
-                    
-                    if (role === 'medico' && game.lastSavedPlayer === p.name) {
-                        disabled = true;
-                    }
-                    if (role === 'assassino') {
-                        const assassino = getAssassino();
-                        if (assassino && p.name === assassino.name) disabled = true;
-                    }
-                    if (role === 'mudo') {
-                        const mudo = getMudo();
-                        if (mudo && p.name === mudo.name) disabled = true;
-                    }
-                    
-                    const chip = document.createElement('div');
-                    chip.className = 'player-chip' + (disabled ? ' dead' : '');
-                    chip.dataset.playerId = p.name;
-                    chip.innerHTML = `
-                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
-                        <span class="chip-name">${p.name}</span>
-                    `;
-                    if (!disabled) {
-                        chip.onclick = () => {
-                            grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
-                            chip.classList.add('selected');
-                            selected = p.name;
-                            btn.disabled = false;
-                        };
-                    }
+                availablePlayers.forEach(p => {
+                    const chip = document.createElement('div'); chip.className = 'player-chip';
+                    const classIcon = CLASS_DEFS[p.role].icon;
+                    const subIcon = p.subclass ? SUBCLASS_DEFS[p.subclass].icon : '';
+                    chip.innerHTML = `<span class="chip-icon">${classIcon} ${subIcon}</span> ${p.name}`;
+                    chip.onclick = () => { grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected')); chip.classList.add('selected'); selected = p.name; btn.disabled = false; };
                     grid.appendChild(chip);
                 });
 
                 btn.onclick = () => {
                     if (!selected) return;
-                    if (role === 'assassino') {
-                        game.nightTargets.assassino = selected;
-                        game.nightStep++;
-                        addLog('🔪 Assassino escolheu seu alvo.');
-                    } else if (role === 'medico') {
-                        game.nightTargets.medico = selected;
-                        game.nightStep++;
-                        addLog('💊 Médico escolheu quem proteger.');
-                    } else if (role === 'detetive') {
-                        game.nightTargets.detetive = selected;
-                        game.nightStep++;
-                        addLog(`🔍 Detetive investigou ${selected}.`);
-                    } else if (role === 'mudo') {
-                        game.mutedPlayer = selected;
-                        game.nightStep++;
-                        addLog(`🤫 Mudo silenciou ${selected}.`);
+                    if (role === 'assassino') { game.nightTargets.assassino = selected; addLog('🔪 Assassino escolheu o alvo.'); }
+                    else if (role === 'medico') { game.nightTargets.medico = selected; addLog('💊 Médico escolheu quem salvar.'); }
+                    else if (role === 'detetive_corrupto') { 
+                        game.nightTargets.detetive = selected; 
+                        const detetive = game.players.find(p => p.subclass === 'detetive_corrupto' && p.alive);
+                        if(detetive) game.detetiveUses[detetive.name]--;
+                        addLog(`🔍 Detetive Corrupto investigou ${selected}. (Usos restantes: ${game.detetiveUses[detetive.name]})`); 
                     }
-                    renderGame();
+                    else if (role === 'mudo') { game.mutedPlayer = selected; addLog(`🤫 Mudo silenciou ${selected}.`); }
+                    game.nightStep++; renderGame();
                 };
             }
 
             function resolveNight() {
                 const mainCard = document.getElementById('gameMainCard');
-                game.eliminatedTonight = [];
-                game.savedTonight = null;
+                game.eliminatedTonight = []; game.savedTonight = null;
                 let resultsHtml = '';
 
-                const assassinoTargetName = game.nightTargets.assassino;
-                const medicoTargetName = game.nightTargets.medico;
-                const detetiveTargetName = game.nightTargets.detetive;
+                const assassinoTarget = game.players.find(p => p.name === game.nightTargets.assassino && p.alive);
+                const medicoTarget = game.nightTargets.medico;
 
-                if (assassinoTargetName) {
-                    const target = game.players.find(p => p.name === assassinoTargetName && p.alive);
-                    if (target) {
-                        if (medicoTargetName === assassinoTargetName) {
-                            game.savedTonight = target.name;
-                            game.lastSavedPlayer = target.name;
-                            resultsHtml += `<div class="result-banner result-safe">💊 <strong>${target.name}</strong> foi salvo pelo Médico!</div>`;
-                            addLog(`💊 ${target.name} foi salvo pelo Médico.`);
-                        } else {
-                            killPlayer(target, 'Assassino', true);
-                            game.eliminatedTonight.push(target);
-                            resultsHtml += `<div class="result-banner result-death">🔪 <strong>${target.name}</strong> foi morto pelo Assassino!</div>`;
-                        }
+                if (assassinoTarget) {
+                    if (medicoTarget === assassinoTarget.name && !game.isBlackout) {
+                        game.savedTonight = assassinoTarget.name; game.lastSavedPlayer = assassinoTarget.name;
+                        resultsHtml += `<div class="result-banner result-safe">💊 <strong>${assassinoTarget.name}</strong> foi salvo pelo Médico!</div>`;
+                        addLog(`💊 ${assassinoTarget.name} foi salvo.`);
+                    } else {
+                        killPlayer(assassinoTarget, 'Assassino', true, false);
+                        game.eliminatedTonight.push(assassinoTarget);
+                        resultsHtml += `<div class="result-banner result-death">🔪 <strong>${assassinoTarget.name}</strong> foi morto!</div>`;
                     }
                 }
 
-                if (medicoTargetName && medicoTargetName !== assassinoTargetName) {
-                    game.lastSavedPlayer = medicoTargetName;
-                    addLog(`💊 Médico protegeu ${medicoTargetName}.`);
+                if (medicoTarget && medicoTarget !== game.nightTargets.assassino && !game.isBlackout) {
+                    game.lastSavedPlayer = medicoTarget; addLog(`💊 Médico protegeu ${medicoTarget}.`);
                 }
 
-                if (detetiveTargetName) {
-                    const detTarget = game.players.find(p => p.name === detetiveTargetName);
+                const detetivePadrao = getPlayerByRole('detetive');
+                if (detetivePadrao && detetivePadrao.alive) {
+                    const aliveTargets = getAlivePlayers().filter(p => p.name !== detetivePadrao.name);
+                    if (aliveTargets.length > 0) {
+                        const randomInvestigation = aliveTargets[Math.floor(Math.random() * aliveTargets.length)];
+                        const isAssassino = randomInvestigation.role === 'assassino';
+                        resultsHtml += `<div class="result-banner result-info">🔍 Detetive investigou <strong>${randomInvestigation.name}</strong>: ${isAssassino ? '⚠️ É O ASSASSINO!' : '✅ É Inocente.'}</div>`;
+                        addLog(`🔍 Detetive investigou ${randomInvestigation.name}.`);
+                    }
+                }
+
+                if (game.nightTargets.detetive) {
+                    const detTarget = game.players.find(p => p.name === game.nightTargets.detetive);
                     if (detTarget) {
                         const isAssassino = detTarget.role === 'assassino';
-                        resultsHtml += `<div class="result-banner result-info">🔍 Investigação sobre <strong>${detetiveTargetName}</strong>: ${isAssassino ? '⚠️ <strong>É O ASSASSINO!</strong>' : '✅ <strong>Não é o Assassino.</strong>'}</div>`;
+                        resultsHtml += `<div class="result-banner result-info">🔍 Corrupto: <strong>${detTarget.name}</strong> ${isAssassino ? '⚠️ É O ASSASSINO!' : '✅ É Inocente.'}</div>`;
                     }
                 }
 
                 if (game.eliminatedTonight.length === 0 && !game.savedTonight) {
-                    resultsHtml += `<div class="result-banner result-safe">🌙 A noite foi tranquila. Ninguém morreu.</div>`;
-                    addLog('🌙 Noite tranquila, ninguém morreu.');
+                    resultsHtml += `<div class="result-banner result-safe">🌙 Noite tranquila. Ninguém morreu.</div>`;
+                    addLog('🌙 Noite tranquila.');
                 }
 
                 if (checkWinCondition()) return;
+                if (game.pendingVingadorRevenge) return;
 
-                if (game.pendingVingadorRevenge) {
-                    return;
-                }
-
-                game.phase = 'day';
-                game.dayStep = 0;
-                game.nightStep = 0;
-                game.nightTargets = {};
+                game.isBlackout = false;
+                game.phase = 'day'; game.dayStep = 0; game.nightStep = 0; game.nightTargets = {};
+                game.eletricistaUsed = false;
                 addLog('☀️ O dia amanheceu...');
 
-                mainCard.innerHTML = resultsHtml + `
-                    <div style="text-align:center;margin-top:16px;">
-                        <button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Discussão do Dia</button>
-                    </div>
-                `;
-                document.getElementById('btnStartDay').onclick = () => {
-                    game.dayStep = 1;
-                    renderGame();
-                };
-                
-                updateAlivePlayersGrid();
-                updateGraveyard();
-                updateMudoBanner();
-                updatePhaseIndicator();
+                mainCard.innerHTML = resultsHtml + `<div style="text-align:center;margin-top:16px;"><button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Dia</button></div>`;
+                document.getElementById('btnStartDay').onclick = () => { game.dayStep = 1; renderGame(); };
+                updateAlivePlayersGrid(); updateGraveyard(); updateMudoBanner(); updatePhaseIndicator();
             }
 
-            // ──────────────────────────────────────
-            // DAY PHASE
-            // ──────────────────────────────────────
             function renderDayPhase(mainCard) {
                 if (game.dayStep === 0) {
-                    mainCard.innerHTML = `
-                        <div style="text-align:center;padding:20px;">
-                            <p>☀️ Dia amanheceu.</p>
-                            <button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Discussão</button>
-                        </div>
-                    `;
-                    document.getElementById('btnStartDay').onclick = () => {
-                        game.dayStep = 1;
-                        renderGame();
-                    };
+                    mainCard.innerHTML = `<div style="text-align:center;padding:20px;"><button class="btn btn-primary" id="btnStartDay">☀️ Iniciar Dia</button></div>`;
+                    document.getElementById('btnStartDay').onclick = () => { game.dayStep = 1; renderGame(); };
                 } else if (game.dayStep === 1) {
+                    const eletricista = getEletricista();
+                    let actionsHtml = `<button class="btn btn-danger" id="btnStartVoting" style="flex:1;">🗳️ Votar</button>`;
+                    
+                    if(eletricista && !game.eletricistaUsed) {
+                        actionsHtml += `<button class="btn btn-secondary" id="btnEletricista" style="flex:1;margin-top:10px;">⚡ Apagar Luzes (Eletricista)</button>`;
+                    }
+
                     mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">💬</span>
-                            <div class="step-title">Discussão do Dia</div>
-                            <div class="step-subtitle">Todos discutem e tentam descobrir quem é o Assassino.</div>
+                        <div style="text-align:center; padding:20px 0; border-bottom:1px solid var(--border); margin-bottom:16px;">
+                            <div style="font-size:2.5em;">💬</div>
+                            <div style="font-weight:700; margin:4px 0; font-family:var(--font-serif);">Discussão do Dia</div>
+                            <div style="color:var(--text-muted);font-size:0.85em;">Apontem o Assassino.</div>
                         </div>
-                        <div style="text-align:center;margin-top:12px;">
-                            <button class="btn btn-danger" id="btnStartVoting">🗳️ Iniciar Votação</button>
-                        </div>
+                        <div style="display:flex; flex-direction:column; gap:10px;">${actionsHtml}</div>
                     `;
-                    document.getElementById('btnStartVoting').onclick = () => {
-                        game.dayStep = 2;
-                        renderGame();
-                    };
+                    document.getElementById('btnStartVoting').onclick = () => { game.dayStep = 2; renderGame(); };
+                    
+                    if(eletricista && !game.eletricistaUsed) {
+                        document.getElementById('btnEletricista').onclick = () => {
+                            game.eletricistaUsed = true;
+                            game.isBlackout = true;
+                            addLog(`⚡ ${eletricista.name} usou o poder! A próxima noite será um Apagão!`);
+                            proceedToNextNight();
+                        };
+                    }
                 } else if (game.dayStep === 2) {
                     mainCard.innerHTML = `
-                        <div class="night-step-card">
-                            <span class="step-icon">🗳️</span>
-                            <div class="step-title">Votação</div>
-                            <div class="step-subtitle">Selecione o jogador eliminado pela votação.</div>
+                        <div style="text-align:center; padding:20px 0; border-bottom:1px solid var(--border); margin-bottom:16px;">
+                            <div style="font-size:2.5em;">🗳️</div>
+                            <div style="font-weight:700; margin:4px 0; font-family:var(--font-serif);">Votação Final</div>
+                            <div style="color:var(--text-muted);font-size:0.85em;">Quem é eliminado? (Mudo não pode ser votado)</div>
                         </div>
-                        <p style="text-align:center;color:var(--text-muted);font-size:0.85em;margin-bottom:12px;">Quem foi eliminado pela votação?</p>
-                        <div class="player-grid" id="voteSelectGrid"></div>
-                        <button class="btn btn-danger" id="btnConfirmVote" disabled>🗳️ Confirmar Eliminação</button>
-                        <button class="btn btn-secondary btn-sm" style="margin-top:8px;display:block;margin-left:auto;margin-right:auto;" id="btnSkipVote">Empate / Ninguém</button>
+                        <div class="player-grid" id="voteSelectGrid" style="grid-template-columns:1fr 1fr;"></div>
+                        <button class="btn btn-danger" id="btnConfirmVote" disabled>Eliminar</button>
+                        <button class="btn btn-secondary" style="margin-top:8px;" id="btnSkipVote">Empate / Ninguém</button>
                     `;
                     setupVoteSelection();
                 }
-                
-                updateAlivePlayersGrid();
-                updateGraveyard();
-                updateMudoBanner();
+                updateAlivePlayersGrid(); updateGraveyard(); updateMudoBanner();
             }
 
             function setupVoteSelection() {
-                const grid = document.getElementById('voteSelectGrid');
-                const btn = document.getElementById('btnConfirmVote');
-                let selected = null;
-                const alive = getAlivePlayers();
-
-                grid.innerHTML = '';
+                const grid = document.getElementById('voteSelectGrid'); const btn = document.getElementById('btnConfirmVote');
+                let selected = null; grid.innerHTML = '';
+                
+                const alive = getAlivePlayers().filter(p => p.name !== game.mutedPlayer);
+                
                 alive.forEach(p => {
-                    const chip = document.createElement('div');
-                    chip.className = 'player-chip';
-                    chip.dataset.playerId = p.name;
-                    chip.innerHTML = `
-                        <span class="chip-icon">${ROLE_DEFS[p.role].icon}</span>
-                        <span class="chip-name">${p.name}</span>
-                    `;
-                    chip.onclick = () => {
-                        grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
-                        chip.classList.add('selected');
-                        selected = p.name;
-                        btn.disabled = false;
-                    };
+                    const chip = document.createElement('div'); chip.className = 'player-chip';
+                    const classIcon = CLASS_DEFS[p.role].icon;
+                    const subIcon = p.subclass ? SUBCLASS_DEFS[p.subclass].icon : '';
+                    chip.innerHTML = `<span class="chip-icon">${classIcon} ${subIcon}</span> ${p.name}`;
+                    chip.onclick = () => { grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected')); chip.classList.add('selected'); selected = p.name; btn.disabled = false; };
                     grid.appendChild(chip);
                 });
-
-                btn.onclick = () => {
-                    if (!selected) return;
-                    resolveVote(selected);
-                };
                 
-                document.getElementById('btnSkipVote').onclick = () => {
-                    addLog('🗳️ Houve um empate. Ninguém foi eliminado na votação.');
-                    proceedToNextNight();
-                };
+                btn.onclick = () => { if (selected) resolveVote(selected); };
+                document.getElementById('btnSkipVote').onclick = () => { addLog('🗳️ Ninguém foi eliminado.'); proceedToNextNight(); };
             }
 
             function resolveVote(eliminatedName) {
                 const target = game.players.find(p => p.name === eliminatedName && p.alive);
                 if (!target) return;
-                
-                killPlayer(target, 'Votação', true);
-                addLog(`🗳️ ${target.name} foi eliminado por votação. Era ${ROLE_DEFS[target.role].name}.`);
+
+                killPlayer(target, 'Votação', true, true);
+                addLog(`🗳️ ${target.name} (${CLASS_DEFS[target.role].name}${target.subclass ? ' - ' + SUBCLASS_DEFS[target.subclass].name : ''}) foi eliminado.`);
 
                 const mainCard = document.getElementById('gameMainCard');
-                let resultHtml = `<div class="result-banner result-death">🗳️ <strong>${target.name}</strong> foi eliminado por votação! Era <strong>${ROLE_DEFS[target.role].name}</strong>.</div>`;
+                let resultHtml = `<div class="result-banner result-death">🗳️ <strong>${target.name}</strong> era <strong>${CLASS_DEFS[target.role].name}</strong>${target.subclass ? ' (' + SUBCLASS_DEFS[target.subclass].name + ')' : ''}.</div>`;
 
-                // Check if Bomba was eliminated by vote - BOMBA WINS!
-                if (target.role === 'bomba') {
-                    resultHtml += `<div class="result-banner result-bomb-win">💣 <strong>A BOMBA EXPLODE E VENCE O JOGO!</strong><br>${target.name} era a Bomba e foi eliminado na votação!</div>`;
-                    addLog(`💣 ${target.name} (Bomba) foi eliminado na votação e VENCEU O JOGO!`);
-                    game.winner = 'bomba';
-                    game.phase = 'gameover';
+                if (target.subclass === 'bomba') {
+                    resultHtml += `<div class="result-banner result-bomb-win">💣 A BOMBA EXPLODIU E VENCEU!</div>`;
+                    game.winner = 'bomba'; game.phase = 'gameover';
                     mainCard.innerHTML = resultHtml;
-                    setTimeout(() => endGame(), 1500);
-                    return;
+                    setTimeout(() => endGame(), 1500); return;
                 }
 
                 mainCard.innerHTML = resultHtml;
-
                 if (checkWinCondition()) return;
-
-                if (game.pendingVingadorRevenge) {
-                    return;
-                }
-
-                setTimeout(() => {
-                    proceedToNextNight();
-                }, 800);
+                if (game.pendingVingadorRevenge) return;
+                setTimeout(() => proceedToNextNight(), 800);
             }
 
             function proceedToNextNight() {
-                game.phase = 'night';
-                game.round++;
-                game.nightStep = 0;
-                game.nightTargets = {};
-                game.eliminatedTonight = [];
-                game.savedTonight = null;
-                game.mutedPlayer = null;
-                game.dayStep = 0;
+                game.phase = 'night'; game.round++; game.nightStep = 0; game.nightTargets = {};
+                game.eliminatedTonight = []; game.savedTonight = null; game.mutedPlayer = null; game.dayStep = 0;
+                game.eletricistaUsed = false;
                 addLog(`🌙 Noite ${game.round} começa...`);
-                renderGame();
-                updatePhaseIndicator();
+                renderGame(); updatePhaseIndicator();
             }
 
-            // ──────────────────────────────────────
-            // GAME OVER
-            // ──────────────────────────────────────
             function endGame() {
-                const mainCard = document.getElementById('gameMainCard');
-                if (mainCard) mainCard.innerHTML = '';
-
-                if (game.winner === 'bomba') {
-                    document.getElementById('gameoverIcon').textContent = '💣';
-                    document.getElementById('gameoverTitle').textContent = 'Bomba Venceu!';
-                    document.getElementById('gameoverTitle').style.color = '#e67e22';
-                    const bomba = game.players.find(p => p.role === 'bomba');
-                    document.getElementById('gameoverSubtitle').textContent = `${bomba ? bomba.name : 'A Bomba'} explodiu na votação e venceu o jogo!`;
-                } else if (game.winner === 'cidadaos') {
-                    document.getElementById('gameoverIcon').textContent = '🏆';
-                    document.getElementById('gameoverTitle').textContent = 'Cidadãos Venceram!';
-                    document.getElementById('gameoverTitle').style.color = '#2ecc71';
-                    document.getElementById('gameoverSubtitle').textContent = 'O Assassino foi eliminado. A cidade está salva!';
-                } else if (game.winner === 'assassino') {
-                    document.getElementById('gameoverIcon').textContent = '🔪';
-                    document.getElementById('gameoverTitle').textContent = 'Assassino Venceu!';
-                    document.getElementById('gameoverTitle').style.color = '#e74c3c';
-                    const assassino = game.players.find(p => p.role === 'assassino');
-                    document.getElementById('gameoverSubtitle').textContent = `${assassino ? assassino.name : 'O Assassino'} dominou a cidade!`;
-                }
-
-                const allRoles = game.players.map(p =>
-                    `${ROLE_DEFS[p.role].icon} <strong>${p.name}</strong>: ${ROLE_DEFS[p.role].name} ${p.alive ? '✅' : '💀'}`
-                ).join('<br>');
-                document.getElementById('gameoverSubtitle').innerHTML += `<br><br><span style="font-size:0.8em;color:var(--text-muted);">${allRoles}</span>`;
-
-                addLog(game.winner === 'bomba' ? '💣 bomba venceu!' : game.winner === 'cidadaos' ? '🏆 Cidadãos venceram!' : '🔪 Assassino venceu!');
-                updateGameLog();
-                showScreen('gameover');
-
-                document.getElementById('btnRestart').onclick = () => {
-                    renderSetup();
-                    showScreen('setup');
+                const mainCard = document.getElementById('gameMainCard'); if (mainCard) mainCard.innerHTML = '';
+                const titles = {
+                    bomba: ['💣', 'Bomba Venceu!', '#e09940', 'Explodiu e dominou o jogo!'],
+                    cidadaos: ['🏆', 'Cidadãos Venceram!', '#80dba0', 'O Assassino foi derrotado!'],
+                    assassino: ['🔪', 'Assassino Venceu!', '#d65d5d', 'A cidade está sob domínio do terror.'],
+                    amantes: ['💘', 'Amantes Venceram!', '#d65d5d', 'O amor prevaleceu na cidade!']
                 };
+                const win = titles[game.winner] || titles['cidadaos'];
+                document.getElementById('gameoverIcon').textContent = win[0];
+                document.getElementById('gameoverTitle').textContent = win[1];
+                document.getElementById('gameoverTitle').style.color = win[2];
+                
+                let details = game.players.map(p => {
+                    const classIcon = CLASS_DEFS[p.role].icon;
+                    const subIcon = p.subclass ? SUBCLASS_DEFS[p.subclass].icon : '';
+                    return `${classIcon}${subIcon} ${p.name}: ${CLASS_DEFS[p.role].name}${p.subclass ? ' (' + SUBCLASS_DEFS[p.subclass].name + ')' : ''} ${p.alive ? '✅' : '💀'}`;
+                }).join('<br>');
+                document.getElementById('gameoverSubtitle').innerHTML = `${win[3]}<br><br><span style="font-size:0.7em;color:var(--text-muted);">${details}</span>`;
+                
+                addLog(`🏁 Fim de jogo: ${win[1]}`);
+                updateGameLog(); showScreen('gameover');
+                document.getElementById('btnRestart').onclick = () => { renderSetup(); showScreen('setup'); };
             }
 
-            // ──────────────────────────────────────
-            // INIT
-            // ──────────────────────────────────────
             renderSetup();
-            showScreen('setup');
-
-            console.log('🌙 Cidade Dorme — Pronto para jogar!');
         })();
     </script>
 </body>
