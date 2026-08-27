@@ -1878,6 +1878,13 @@
             return true;
         }
 
+        if (assassinos.length >= cidadaos.length && assassinos.length > 0) {
+            game.winner = 'assassino';
+            game.phase = 'gameover';
+            endGame();
+            return true;
+        }
+
         if (assassinos.length === 0 && cidadaos.length > 0) {
             game.winner = 'cidadaos';
             game.phase = 'gameover';
