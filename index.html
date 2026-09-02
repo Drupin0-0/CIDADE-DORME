@@ -1,21 +1,3 @@
-
-
-Pular para o conteúdo
-Como usar o Gmail com leitores de tela
-Ativar as notificações na área de trabalho para o Gmail.
-   OK  Agora não(a)
-1 de 3.449
-cdd drm
-Caixa de entrada
-
-Rhyan Rodrigo
-Anexos
-09:21 (há 0 minuto)
-para mim
-
-
- 1 anexo
-  •  Verificados pelo Gmail
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -622,51 +604,6 @@ para mim
         .item-description { color: var(--text-muted); font-size: 0.65em; line-height: 1.2; margin: 4px 0; }
         .item-card .btn { padding: 6px; font-size: 0.6em; }
 
-<<<<<<< HEAD
-=======
-        .mission-card {
-            padding: 8px 10px;
-            border: 1px solid var(--border);
-            margin-bottom: 6px;
-            background: rgba(0,0,0,0.15);
-            border-radius: var(--radius);
-        }
-
-        .mission-card.completed {
-            opacity: 0.65;
-            border-color: rgba(84,204,125,0.4);
-            background: rgba(84,204,125,0.05);
-        }
-
-        .mission-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .mission-title {
-            font-size: 0.75em;
-            font-weight: 600;
-        }
-
-        .mission-reward-badge {
-            color: var(--accent);
-            font-size: 0.7em;
-            font-weight: 700;
-            background: rgba(196,160,108,0.12);
-            padding: 2px 6px;
-            border-radius: 10px;
-            border: 1px solid rgba(196,160,108,0.25);
-        }
-
-        .mission-description {
-            color: var(--text-muted);
-            font-size: 0.66em;
-            margin-top: 3px;
-            line-height: 1.3;
-        }
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         .item-use-note {
             color: var(--text-muted);
             font-size: 0.65em;
@@ -676,73 +613,6 @@ para mim
             margin-bottom: 8px;
         }
 
-<<<<<<< HEAD
-=======
-        /* MODAL DE TODAS AS MISSÕES */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(4px);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal-container {
-            background: var(--bg-card);
-            border: 1px solid var(--accent);
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 95vw;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-            padding: 14px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-        }
-
-        .missions-columns-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            overflow-y: auto;
-            max-height: 68vh;
-            padding-right: 4px;
-            margin-top: 10px;
-        }
-
-        .player-mission-col {
-            background: rgba(0,0,0,0.25);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .player-mission-col-header {
-            font-family: var(--font-serif);
-            font-size: 0.82em;
-            font-weight: 700;
-            color: var(--accent);
-            text-align: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         /* DADO 3D ANIMADO */
         .dice-scene {
             width: 80px;
@@ -827,10 +697,6 @@ para mim
 
         @media (max-width: 420px) {
             .logo-title { font-size: 1.8em; }
-<<<<<<< HEAD
-=======
-            .missions-columns-grid { grid-template-columns: 1fr; }
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         }
     </style>
 </head>
@@ -917,20 +783,10 @@ para mim
         <!-- PERFIL DO JOGADOR -->
         <div class="card profile-panel" id="playerProfilePanel" style="display:none;"></div>
 
-<<<<<<< HEAD
         <!-- JOGADORES & CEMITÉRIO -->
         <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:8px;">
                 <span style="font-size:0.65em;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);">Vivos</span>
-=======
-        <!-- JOGADORES & PAINEL DE MISSÕES -->
-        <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:8px;">
-                <span style="font-size:0.65em;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);">Vivos</span>
-                <button class="btn btn-secondary" style="width:auto;padding:4px 8px;font-size:0.6em;" id="btnOpenMissionsModal">
-                    📜 Ver Missões de Todos
-                </button>
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                 <span style="font-size:0.65em;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);">🪦 Cemitério</span>
             </div>
 
@@ -969,20 +825,6 @@ para mim
 
 </div>
 
-<<<<<<< HEAD
-=======
-<!-- ========================= MODAL DE TODAS AS MISSÕES ========================== -->
-<div class="modal-overlay" id="missionsModal">
-    <div class="modal-container">
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:8px;">
-            <h2 style="margin-bottom:0;border-bottom:none;padding-bottom:0;">📜 Missões de Cada Jogador</h2>
-            <button class="btn btn-secondary" style="width:auto;padding:6px 12px;font-size:0.65em;" id="btnCloseMissionsModal">✕ Fechar</button>
-        </div>
-        <div class="missions-columns-grid" id="missionsColumnsGrid"></div>
-    </div>
-</div>
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
 <script>
 (function() {
 
@@ -996,16 +838,13 @@ para mim
     const SUBCLASS_DEFS = {
         eletricista: { name: 'Eletricista', icon: '⚡', restrictedTo: 'assassino', desc: 'Durante a reunião pode pedir para a cidade dormir (1 uso por partida).' },
         mudo: { name: 'Mudo', icon: '🤫', restrictedTo: 'assassino', desc: 'Silencia um jogador (ou a si mesmo) durante a rodada.' },
-<<<<<<< HEAD
         detetive_corrupto: { name: 'Detetive Corrupto', icon: '🔍', restrictedTo: 'assassino', desc: 'Descobre a classe e subclasse de qualquer um durante a Noite (2 usos no jogo).' },
-=======
-        detetive_corrupto: { name: 'Detetive Corrupto', icon: '🔍', restrictedTo: 'assassino', desc: 'Descobre a classe e subclasse de qualquer um durante o dia (2 usos no jogo).' },
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         vingador: { name: 'Vingador', icon: '⚔️', restrictedTo: 'cidadao', desc: 'Quando é morto, pode escolher alguém para morrer junto.' },
         amante: { name: 'Amante', icon: '💘', restrictedTo: 'universal', desc: 'Conecta dois jogadores. Se um morrer, o outro também morre.' },
         prefeito: { name: 'Prefeito', icon: '🏛️', restrictedTo: 'universal', desc: 'Seu voto vale por 2.' },
         bala_magica: { name: 'Bala Mágica', icon: '🔫', restrictedTo: 'universal', desc: 'Possui uma bala capaz de matar qualquer pessoa durante o Dia (1 uso).' },
-        bomba: { name: 'Bomba', icon: '💣', restrictedTo: 'universal', desc: 'Seu objetivo é ser eliminado durante a votação.' }
+        bomba: { name: 'Bomba', icon: '💣', restrictedTo: 'universal', desc: 'Seu objetivo é ser eliminado durante a votação.' },
+        anjo: { name: 'Anjo', icon: '👼', restrictedTo: 'cidadao', desc: 'Se for morto pelo Assassino, pode reviver um jogador morto (exceto ele mesmo).' }
     };
 
     const ITEM_DEFS = {
@@ -1014,64 +853,11 @@ para mim
         coracao: { name: 'Coração Amigo', icon: '❤️', price: 75, desc: 'Revive um jogador morto.' },
         pilula: { name: 'Pílula da Vida', icon: '💊', price: 40, desc: 'Protege alguém na próxima noite.' },
         roleta: { name: 'Roleta Russa All Win', icon: '🎰', price: 5, desc: 'Duelo com dado de 6 lados valendo a vida e todas as moedas.' },
-<<<<<<< HEAD
         algema: { name: 'Algema', icon: '⛓️', price: 30, desc: 'Impede um jogador de votar e ser votado na rodada.' },
         faca: { name: 'Faca', icon: '🔪', price: 60, desc: 'Ao usar, mata um jogador imediatamente.' }
     };
 
     const ITEM_STOCK = 2;
-=======
-        algema: { name: 'Algema', icon: '⛓️', price: 30, desc: 'Impede um jogador de votar e ser votado na rodada.' }
-    };
-
-    /* =========================================================
-       MISSÕES UNIVERSAIS
-    ========================================================= */
-    const MISSIONS = [
-        {
-            id: 'silencio',
-            title: '🤫 Silêncio Absoluto',
-            reward: 50,
-            description: 'Seja silenciado 3 vezes na partida pelo mudo.'
-        },
-        {
-            id: 'isca',
-            title: '🎣 Isca Perfeita',
-            reward: 30,
-            description: 'Faça um jogador aleatório cair em um ragebait.'
-        },
-        {
-            id: 'identidade',
-            title: '🎭 Falsa Identidade',
-            reward: 10,
-            description: 'Faça um jogador acusar você de ser um papel que você não é.'
-        },
-        {
-            id: 'mentira',
-            title: '🪤 Mentira Perfeita',
-            reward: 10,
-            description: 'Faça o jogador escolhido acreditar em uma informação falsa sua.'
-        },
-        {
-            id: 'inimigo',
-            title: '💢 Inimigo Público',
-            reward: 40,
-            description: 'Seja odiado por 2 jogadores.'
-        },
-        {
-            id: 'ileso',
-            title: '🕊️ Ileso',
-            reward: 15,
-            description: 'Sair da votação sem ser votado.'
-        },
-        {
-            id: 'sobreviver_noites',
-            title: '⏳ Resistente',
-            reward: 25,
-            description: 'Sobreviver 3 noites.'
-        }
-    ];
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
 
     const screens = {
         setup: document.getElementById('screen-setup'),
@@ -1105,6 +891,7 @@ para mim
         round: 0,
         winner: null,
         pendingVingadorRevenge: false,
+        pendingAngelRevival: false,
         isBlackout: false,
         detetiveUses: {},
         eletricistaUsed: false,
@@ -1136,10 +923,7 @@ para mim
     function getDetetive() { return getPlayerByRole('detetive'); }
     function getMudo() { return game.players.find(p => p.subclass === 'mudo' && p.alive); }
     function getEletricista() { return game.players.find(p => p.subclass === 'eletricista' && p.alive); }
-<<<<<<< HEAD
     function getDetetiveCorrupto() { return game.players.find(p => p.subclass === 'detetive_corrupto' && p.alive); }
-=======
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
 
     function addLog(message) {
         game.gameLog.push(`[R${game.round}] ${message}`);
@@ -1166,11 +950,7 @@ para mim
     function resetStore() {
         game.store = {};
         Object.keys(ITEM_DEFS).forEach(itemId => {
-<<<<<<< HEAD
             game.store[itemId] = { stock: ITEM_STOCK, purchasedBy: [] };
-=======
-            game.store[itemId] = { purchased: false, purchasedBy: null };
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         });
     }
 
@@ -1183,13 +963,8 @@ para mim
         const item = ITEM_DEFS[itemId];
         if (!player || !item) return;
 
-<<<<<<< HEAD
         if (game.store[itemId].stock <= 0) {
             alert(`O item ${item.name} está esgotado nesta partida.`);
-=======
-        if (game.store[itemId].purchased) {
-            alert(`O item ${item.name} já foi comprado nesta partida.`);
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
             return;
         }
 
@@ -1200,13 +975,8 @@ para mim
 
         player.coins -= item.price;
         player.inventory.push(itemId);
-<<<<<<< HEAD
         game.store[itemId].stock--;
         game.store[itemId].purchasedBy.push(player.name);
-=======
-        game.store[itemId].purchased = true;
-        game.store[itemId].purchasedBy = player.name;
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
 
         addLog(`🏪 ${player.name} comprou ${item.icon} ${item.name}.`);
         renderPlayerProfile(player.name);
@@ -1244,6 +1014,88 @@ para mim
         updateGraveyard();
     }
 
+    // Função que ativa o poder do Anjo (chamada apenas quando morre pelo Assassino)
+    function triggerAngelRevival(angelPlayer) {
+        // Filtra os jogadores mortos, EXCLUINDO o próprio Anjo
+        const deadPlayers = getDeadPlayers().filter(p => p.name !== angelPlayer.name);
+        
+        // Se não houver ninguém para reviver, o poder não faz nada
+        if (!deadPlayers.length) {
+            addLog(`👼 ${angelPlayer.name} morreu, mas não há ninguém para reviver.`);
+            return;
+        }
+
+        game.pendingAngelRevival = true;
+        const mainCard = document.getElementById('gameMainCard');
+
+        mainCard.innerHTML = `
+            <div style="text-align:center;padding:12px;border:1px solid var(--border);margin-bottom:10px;background:rgba(0,0,0,0.3);">
+                <div style="font-size:2em;">👼</div>
+                <div style="font-weight:700;margin:2px 0;font-family:var(--font-serif);">Poder do Anjo!</div>
+                <div style="color:var(--text-muted);font-size:0.75em;">
+                    ${angelPlayer.name} foi morto pelo Assassino.<br>
+                    Escolha UM jogador morto para reviver (exceto o próprio Anjo).
+                </div>
+            </div>
+            <div class="player-grid" id="angelRevivalGrid" style="grid-template-columns:1fr;"></div>
+            <button class="btn btn-primary" id="btnConfirmAngelRevival" disabled>Reviver</button>
+            <button class="btn btn-secondary" style="margin-top:6px;" id="btnSkipAngelRevival">Não reviver</button>
+        `;
+
+        const grid = document.getElementById('angelRevivalGrid');
+        const btn = document.getElementById('btnConfirmAngelRevival');
+        let selected = null;
+
+        deadPlayers.forEach(player => {
+            const chip = document.createElement('div');
+            chip.className = 'player-chip';
+            chip.innerHTML = `
+                <span class="chip-icon">${CLASS_DEFS[player.role].icon}</span>
+                <div class="player-chip-content">
+                    <div class="player-chip-name">${player.name}</div>
+                </div>
+            `;
+            chip.onclick = () => {
+                grid.querySelectorAll('.player-chip').forEach(c => c.classList.remove('selected'));
+                chip.classList.add('selected');
+                selected = player.name;
+                btn.disabled = false;
+            };
+            grid.appendChild(chip);
+        });
+
+        btn.onclick = () => {
+            if (!selected) return;
+            const target = getPlayerByName(selected);
+            if (target && !target.alive) {
+                manualRevive(target);
+                addLog(`👼 ${angelPlayer.name} (Anjo) reviveu ${target.name}!`);
+            }
+            // Continua o jogo
+            game.pendingAngelRevival = false;
+            continueAfterAngelRevival();
+        };
+
+        document.getElementById('btnSkipAngelRevival').onclick = () => {
+            addLog(`👼 ${angelPlayer.name} (Anjo) optou por não reviver ninguém.`);
+            game.pendingAngelRevival = false;
+            continueAfterAngelRevival();
+        };
+    }
+
+    function continueAfterAngelRevival() {
+        // Verifica se o jogo acabou com o revive
+        if (checkWinCondition()) return;
+        // Se a fase ainda for noite, continua a resolução
+        if (game.phase === 'night') {
+            game.nightStep++;
+            renderGame();
+        } else {
+            // Se for dia, recarrega a fase
+            renderGame();
+        }
+    }
+
     function killPlayer(player, cause, triggerVingador = true, isVote = false, ignoreShield = false) {
         if (!player || !player.alive) return false;
 
@@ -1256,6 +1108,17 @@ para mim
         player.alive = false;
         addLog(`${player.name} foi eliminado(a) — ${cause}`);
 
+        // --- LÓGICA DO ANJO ---
+        // Verifica se o Anjo foi morto PELO ASSASSINO (não por votação ou outra causa)
+        // E se o poder ainda não foi ativado
+        if (cause === 'Assassino' && player.subclass === 'anjo' && !game.pendingAngelRevival) {
+            // Ativa o poder do Anjo
+            triggerAngelRevival(player);
+            // O jogo pausa aqui, o fluxo continua em continueAfterAngelRevival
+            return true;
+        }
+
+        // --- LÓGICA DOS AMANTES ---
         if (game.lovers.includes(player.name) && !game.amanteDeathTriggered) {
             const otherLover = game.players.find(p => game.lovers.includes(p.name) && p.name !== player.name && p.alive);
             if (otherLover) {
@@ -1266,6 +1129,7 @@ para mim
             }
         }
 
+        // --- LÓGICA DO VINGADOR ---
         if (triggerVingador && player.subclass === 'vingador' && !isVote && player.role !== 'assassino') {
             triggerVingadorRevenge(player);
         }
@@ -1373,39 +1237,6 @@ para mim
         );
     }
 
-<<<<<<< HEAD
-=======
-    function useDetetiveCorruptoDay(player) {
-        if (game.phase !== 'day') {
-            alert('A investigação do Detetive Corrupto só pode ser acionada durante o Dia!');
-            return;
-        }
-        const uses = game.detetiveUses[player.name] || 0;
-        if (uses <= 0) {
-            alert('Você já utilizou suas 2 investigações disponíveis!');
-            return;
-        }
-
-        const targets = getAlivePlayers().filter(p => p.name !== player.name);
-        if (!targets.length) {
-            alert('Não há outros jogadores vivos para investigar.');
-            return;
-        }
-
-        showTargetSelection(
-            '🔍 Investigação Corrupta',
-            `Escolha quem investigar (${uses} restante${uses === 1 ? '' : 's'}).`,
-            targets,
-            target => {
-                game.detetiveUses[player.name]--;
-                addLog(`🔍 ${player.name} (Det. Corrupto) investigou ${target.name}.`);
-                alert(`Resultado:\n\n${target.name} é ${CLASS_DEFS[target.role].name}${target.subclass ? ` (${SUBCLASS_DEFS[target.subclass].name})` : ''}.`);
-                renderPlayerProfile(player.name);
-            }
-        );
-    }
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
     function startRoletaRussaDuel(player, target) {
         consumeItem(player, 'roleta');
         closePlayerProfile();
@@ -1572,7 +1403,6 @@ para mim
                     </button>
                 `;
             }
-<<<<<<< HEAD
         }
 
         if (player.subclass === 'detetive_corrupto') {
@@ -1600,36 +1430,6 @@ para mim
             </div>
 
             <div class="profile-stat">
-=======
-            if (player.subclass === 'detetive_corrupto') {
-                const uses = game.detetiveUses[player.name] || 0;
-                subclassActionsHtml += `
-                    <div class="section-title">🔍 Investigação Corrupta (${uses}/2)</div>
-                    <button class="btn btn-primary" id="btnUseCorruptDetective" ${uses <= 0 ? 'disabled' : ''}>
-                        🔍 Investigar Jogador (${uses} restante${uses === 1 ? '' : 's'})
-                    </button>
-                `;
-            }
-        }
-
-        panel.innerHTML = `
-            <div class="profile-header">
-                <div>
-                    <div class="profile-name">${player.name}</div>
-                    ${isLeader ? `<div class="leader-label">👑 Líder da partida</div>` : ''}
-                </div>
-                <button class="btn btn-secondary" style="width:auto;padding:4px 8px;font-size:0.6em;" id="closeProfileBtn">
-                    ✕
-                </button>
-            </div>
-
-            <div class="profile-stat">
-                <span>Estado</span>
-                <span class="profile-stat-value">${player.alive ? '❤️ VIVO' : '💀 MORTO'}</span>
-            </div>
-
-            <div class="profile-stat">
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                 <span>🪙 Moedas</span>
                 <span class="profile-stat-value">${player.coins || 0}</span>
             </div>
@@ -1656,14 +1456,6 @@ para mim
             </div>
 
             ${game.phase === 'day' ? renderStore(player) : `<div class="section-title">🏪 Loja</div><div class="item-use-note">🌙 A loja só fica disponível durante o Dia.</div>`}
-<<<<<<< HEAD
-=======
-
-            <div class="section-title">📜 Minhas Missões (2)</div>
-            <div id="missionsContainer">
-                ${renderMissions(player)}
-            </div>
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         `;
 
         document.getElementById('closeProfileBtn').onclick = closePlayerProfile;
@@ -1671,13 +1463,6 @@ para mim
         if (document.getElementById('btnShootBalaMagica')) {
             document.getElementById('btnShootBalaMagica').onclick = () => useBalaMagica(player);
         }
-<<<<<<< HEAD
-=======
-        if (document.getElementById('btnUseCorruptDetective')) {
-            document.getElementById('btnUseCorruptDetective').onclick = () => useDetetiveCorruptoDay(player);
-        }
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         document.getElementById('coinPlus5').onclick = () => changeCoins(player, 5);
         document.getElementById('coinPlus1').onclick = () => changeCoins(player, 1);
         document.getElementById('coinMinus1').onclick = () => changeCoins(player, -1);
@@ -1694,60 +1479,34 @@ para mim
                 button.onclick = () => useItem(player.name, button.dataset.useItem);
             });
         }
-<<<<<<< HEAD
-=======
-
-        document.querySelectorAll('[data-complete-mission]').forEach(button => {
-            button.onclick = () => completeMission(player.name, button.dataset.completeMission);
-        });
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
     }
 
     function renderStore(player) {
         let html = `
             <div class="section-title">🏪 Loja Compartilhada</div>
-<<<<<<< HEAD
             <div class="item-use-note">☀️ Loja aberta durante o Dia. ${ITEM_STOCK} unidades de cada item por partida.</div>
-=======
-            <div class="item-use-note">☀️ Loja aberta durante o Dia. 1 compra por item na partida.</div>
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         `;
 
         Object.entries(ITEM_DEFS).forEach(([itemId, item]) => {
             const storeItem = game.store[itemId];
-<<<<<<< HEAD
             const stock = storeItem ? storeItem.stock : ITEM_STOCK;
             const soldOut = stock <= 0;
             const owned = hasItem(player, itemId);
 
             html += `
                 <div class="item-card ${soldOut ? 'purchased' : ''}">
-=======
-            const purchased = storeItem && storeItem.purchased;
-            const owned = hasItem(player, itemId);
-
-            html += `
-                <div class="item-card ${purchased ? 'purchased' : ''}">
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                     <div class="item-card-header">
                         <span class="item-icon">${item.icon}</span>
                         <span class="item-name">${item.name}</span>
                         <span class="item-price">${item.price} 🪙</span>
                     </div>
                     <div class="item-description">${item.desc}</div>
-<<<<<<< HEAD
                     <div style="color:var(--text-muted);font-size:0.6em;margin-bottom:3px;">
                         📦 Estoque: ${stock}/${ITEM_STOCK}${storeItem && storeItem.purchasedBy.length ? ` — Comprado por ${storeItem.purchasedBy.join(', ')}` : ''}
                     </div>
                     ${owned
                         ? `<button class="btn btn-primary" data-use-item="${itemId}">${item.icon} Usar Item</button>`
                         : `<button class="btn btn-secondary" data-buy-item="${itemId}" ${soldOut || player.coins < item.price ? 'disabled' : ''}>${soldOut ? 'Esgotado' : 'Comprar'}</button>`
-=======
-                    ${purchased ? `<div style="color:var(--text-muted);font-size:0.6em;margin-bottom:3px;">🔒 Comprado por ${storeItem.purchasedBy}</div>` : ''}
-                    ${owned
-                        ? `<button class="btn btn-primary" data-use-item="${itemId}">${item.icon} Usar Item</button>`
-                        : `<button class="btn btn-secondary" data-buy-item="${itemId}" ${purchased || player.coins < item.price ? 'disabled' : ''}>${purchased ? 'Indisponível' : 'Comprar'}</button>`
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                     }
                 </div>
             `;
@@ -1756,117 +1515,6 @@ para mim
         return html;
     }
 
-<<<<<<< HEAD
-=======
-    function renderMissions(player) {
-        if (!player.assignedMissions) player.assignedMissions = [];
-        if (!player.completedMissions) player.completedMissions = [];
-
-        return player.assignedMissions.map(missionId => {
-            const mission = MISSIONS.find(m => m.id === missionId);
-            if (!mission) return '';
-            const completed = player.completedMissions.includes(mission.id);
-            return `
-                <div class="mission-card ${completed ? 'completed' : ''}">
-                    <div class="mission-header-row">
-                        <span class="mission-title">${mission.title}</span>
-                        <span class="mission-reward-badge">+${mission.reward} 🪙</span>
-                    </div>
-                    <div class="mission-description">${mission.description}</div>
-                    <button
-                        class="btn ${completed ? 'btn-secondary' : 'btn-success'}"
-                        style="margin-top:6px;padding:6px;font-size:0.6em;"
-                        data-complete-mission="${mission.id}"
-                        ${completed ? 'disabled' : ''}
-                    >
-                        ${completed ? '✓ CONCLUÍDA' : '✓ Concluir Missão'}
-                    </button>
-                </div>
-            `;
-        }).join('');
-    }
-
-    function completeMission(playerName, missionId) {
-        const player = getPlayerByName(playerName);
-        if (!player) return;
-        if (!player.completedMissions) player.completedMissions = [];
-        if (player.completedMissions.includes(missionId)) return;
-
-        const mission = MISSIONS.find(m => m.id === missionId);
-        if (!mission) return;
-
-        player.completedMissions.push(missionId);
-        player.coins = (player.coins || 0) + mission.reward;
-
-        addLog(`📜 ${player.name} concluiu "${mission.title}" (+${mission.reward} 🪙 creditados).`);
-        renderPlayerProfile(player.name);
-        updateAlivePlayersGrid();
-        updateGraveyard();
-        renderAllMissionsModal();
-    }
-
-    function renderAllMissionsModal() {
-        const grid = document.getElementById('missionsColumnsGrid');
-        grid.innerHTML = '';
-
-        game.players.forEach(player => {
-            const col = document.createElement('div');
-            col.className = 'player-mission-col';
-
-            const missionsHtml = (player.assignedMissions || []).map(mId => {
-                const mission = MISSIONS.find(m => m.id === mId);
-                if (!mission) return '';
-                const completed = (player.completedMissions || []).includes(mId);
-
-                return `
-                    <div class="mission-card ${completed ? 'completed' : ''}" style="margin-bottom:6px;">
-                        <div class="mission-header-row">
-                            <span class="mission-title" style="font-size:0.7em;">${mission.title}</span>
-                            <span class="mission-reward-badge" style="font-size:0.62em;">+${mission.reward} 🪙</span>
-                        </div>
-                        <div class="mission-description" style="font-size:0.62em;">${mission.description}</div>
-                        <button
-                            class="btn ${completed ? 'btn-secondary' : 'btn-success'}"
-                            style="margin-top:5px;padding:4px;font-size:0.58em;"
-                            data-modal-complete-player="${player.name}"
-                            data-modal-complete-mission="${mission.id}"
-                            ${completed ? 'disabled' : ''}
-                        >
-                            ${completed ? '✓ Concluída (+'+mission.reward+'🪙)' : '✓ Concluir Missão'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-
-            col.innerHTML = `
-                <div class="player-mission-col-header">
-                    <span>${CLASS_DEFS[player.role].icon}</span>
-                    <span>${player.name}</span>
-                    <span style="font-size:0.75em;color:${player.alive ? '#80dba0' : '#d65d5d'}">(${player.alive ? 'Vivo' : 'Morto'})</span>
-                </div>
-                <div>${missionsHtml || '<span style="color:var(--text-muted);font-size:0.65em;">Sem missões</span>'}</div>
-            `;
-
-            grid.appendChild(col);
-        });
-
-        grid.querySelectorAll('[data-modal-complete-mission]').forEach(btn => {
-            btn.onclick = () => {
-                completeMission(btn.dataset.modalCompletePlayer, btn.dataset.modalCompleteMission);
-            };
-        });
-    }
-
-    document.getElementById('btnOpenMissionsModal').onclick = () => {
-        renderAllMissionsModal();
-        document.getElementById('missionsModal').classList.add('active');
-    };
-
-    document.getElementById('btnCloseMissionsModal').onclick = () => {
-        document.getElementById('missionsModal').classList.remove('active');
-    };
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
     function useItem(playerName, itemId) {
         if (game.phase !== 'day') {
             alert('Os itens só podem ser usados durante o Dia.');
@@ -1943,7 +1591,6 @@ para mim
                 });
                 return;
             }
-<<<<<<< HEAD
             case 'faca': {
                 const targets = getAlivePlayers().filter(p => p.name !== player.name);
                 if (!targets.length) {
@@ -1961,8 +1608,6 @@ para mim
                 });
                 return;
             }
-=======
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         }
 
         renderPlayerProfile(player.name);
@@ -2067,6 +1712,7 @@ para mim
         game.round = 0;
         game.winner = null;
         game.pendingVingadorRevenge = false;
+        game.pendingAngelRevival = false;
         game.isBlackout = false;
         game.detetiveUses = {};
         game.eletricistaUsed = false;
@@ -2171,7 +1817,7 @@ para mim
 
         const categories = {
             '🔪 Exclusivas do Assassino': ['eletricista', 'mudo', 'detetive_corrupto'],
-            '👤 Para Cidadãos, Médicos e Detetives': ['vingador'],
+            '👤 Para Cidadãos, Médicos e Detetives': ['vingador', 'anjo'],
             '🌍 Universais': ['amante', 'prefeito', 'bala_magica', 'bomba']
         };
 
@@ -2262,10 +1908,6 @@ para mim
 
             game.players = names.map((name, index) => {
                 const role = game.selectedClasses[index];
-<<<<<<< HEAD
-=======
-                const assigned = shuffleArray([...MISSIONS]).slice(0, 2).map(m => m.id);
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
 
                 return {
                     name,
@@ -2273,13 +1915,7 @@ para mim
                     subclass: game.selectedSubclasses[index] || null,
                     alive: true,
                     coins: 0,
-<<<<<<< HEAD
                     inventory: []
-=======
-                    inventory: [],
-                    assignedMissions: assigned,
-                    completedMissions: []
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                 };
             });
 
@@ -2498,7 +2134,6 @@ para mim
         const medico = getMedico();
         const detetive = getDetetive();
         const mudo = getMudo();
-<<<<<<< HEAD
         const detetiveCorrupto = getDetetiveCorrupto();
         const corruptUsesLeft = detetiveCorrupto ? (game.detetiveUses[detetiveCorrupto.name] || 0) : 0;
 
@@ -2508,14 +2143,6 @@ para mim
         if (detetiveCorrupto && corruptUsesLeft > 0) steps.push('detetive_corrupto');
         if (medico && !game.isBlackout) steps.push('medico');
         if (detetive) steps.push('detetive');
-=======
-
-        const steps = [];
-        if (assassino) steps.push('assassino');
-        if (medico && !game.isBlackout) steps.push('medico');
-        if (detetive) steps.push('detetive');
-        if (mudo) steps.push('mudo');
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         steps.push('resolve');
 
         if (game.nightStep >= steps.length) {
@@ -2528,7 +2155,6 @@ para mim
             assassino: ['🔪', 'Assassino, escolha sua vítima.'],
             medico: ['💊', 'Médico, quem você protege?'],
             detetive: ['🔍', 'Detetive, escolha quem deseja investigar.'],
-<<<<<<< HEAD
             mudo: ['🤫', 'Mudo, silencie um jogador (ou a si mesmo).'],
             detetive_corrupto: ['🔍', `Detetive Corrupto, escolha quem investigar. (${corruptUsesLeft} restante${corruptUsesLeft === 1 ? '' : 's'})`]
         };
@@ -2541,11 +2167,6 @@ para mim
             ? `<button class="btn btn-secondary" id="btnSkipNightAction" style="margin-top:6px;">${skippableRoles[role]}</button>`
             : '';
 
-=======
-            mudo: ['🤫', 'Mudo, silencie um jogador (ou a si mesmo).']
-        };
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         mainCard.innerHTML = `
             <div style="text-align:center;padding:12px 0;margin-bottom:10px;border-bottom:1px solid var(--border);">
                 <div style="font-size:2em;">${titles[role][0]}</div>
@@ -2553,7 +2174,6 @@ para mim
             </div>
             <div class="player-grid" id="nightSelectGrid"></div>
             <button class="btn btn-primary" id="btnNightAction" disabled>Confirmar</button>
-<<<<<<< HEAD
             ${skipButtonHtml}
         `;
 
@@ -2569,10 +2189,6 @@ para mim
             };
         }
 
-=======
-        `;
-
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
         setupNightSelection(role);
     }
 
@@ -2585,10 +2201,7 @@ para mim
             if (role === 'assassino' && player.role === 'assassino') return false;
             if (role === 'medico' && game.lastSavedPlayer === player.name) return false;
             if (role === 'detetive' && player.role === 'detetive') return false;
-<<<<<<< HEAD
             if (role === 'detetive_corrupto' && player.subclass === 'detetive_corrupto') return false;
-=======
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
             return true;
         });
 
@@ -2627,7 +2240,6 @@ para mim
             } else if (role === 'mudo') {
                 game.mutedPlayer = selected;
                 addLog(`🤫 Mudo silenciou ${selected}.`);
-<<<<<<< HEAD
             } else if (role === 'detetive_corrupto') {
                 const corrupto = getDetetiveCorrupto();
                 const target = getPlayerByName(selected);
@@ -2640,8 +2252,6 @@ para mim
                     renderGame();
                 }
                 return;
-=======
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
             }
 
             game.nightStep++;
@@ -2649,7 +2259,6 @@ para mim
         };
     }
 
-<<<<<<< HEAD
     function showCorruptDetectiveResult(target) {
         const mainCard = document.getElementById('gameMainCard');
         mainCard.innerHTML = `
@@ -2668,8 +2277,6 @@ para mim
         };
     }
 
-=======
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
     function resolveNight() {
         const mainCard = document.getElementById('gameMainCard');
         game.eliminatedTonight = [];
@@ -2730,6 +2337,7 @@ para mim
 
         if (checkWinCondition()) return;
         if (game.pendingVingadorRevenge) return;
+        if (game.pendingAngelRevival) return;
 
         game.isBlackout = false;
         game.phase = 'day';
@@ -2794,11 +2402,7 @@ para mim
                     <div style="font-size:2em;">💬</div>
                     <div style="font-weight:700;margin:2px 0;font-family:var(--font-serif);font-size:0.9em;">Discussão do Dia</div>
                     <div style="color:var(--text-muted);font-size:0.72em;">
-<<<<<<< HEAD
                         Abra o perfil dos jogadores para conferir itens e poderes.
-=======
-                        Abra o perfil dos jogadores para conferir itens, poderes e concluir missões.
->>>>>>> acd4249433e8cf527b450b4ce73b6b7097d45b2c
                     </div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px;">
@@ -2984,5 +2588,3 @@ para mim
 
 </body>
 </html>
-game.html
-Exibindo game.html.
