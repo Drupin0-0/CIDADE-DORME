@@ -2360,10 +2360,20 @@
         game.savedTonight = null;
         let resultsHtml = '';
 
-        const assassinTarget = getPlayerByName(game.nightTargets.assassino);
         const doctorTarget = game.nightTargets.medico;
 
-        if (assassinTarget && assassinTarget.alive) {
+        // Resolve o ataque de TODOS os assassinos vivos.
+        // Os alvos são salvos como assassino_0, assassino_1, etc.
+        const assassinTargets = Object.keys(game.nightTargets)
+            .filter(key => key.startsWith('assassino_'))
+            .map(key => getPlayerByName(game.nightTargets[key]))
+            .filter(player => player && player.alive);
+
+        const uniqueAssassinTargets = [...new Map(assassinTargets.map(player => [player.name, player])).values()];
+
+        uniqueAssassinTargets.forEach(assassinTarget => {
+            if (!assassinTarget.alive) return;
+
             const protectedByDoctor = doctorTarget === assassinTarget.name && !game.isBlackout;
             const protectedByPill = game.doctorProtectionPlayers.includes(assassinTarget.name);
 
@@ -2380,7 +2390,7 @@
                 addLog(`💊 ${assassinTarget.name} foi salvo na noite.`);
             } else {
                 const died = killPlayer(assassinTarget, 'Assassino', true, false);
-                if (died) {
+                if (died && !game.eliminatedTonight.some(p => p.name === assassinTarget.name)) {
                     game.eliminatedTonight.push(assassinTarget);
                     resultsHtml += `
                         <div class="result-banner result-death">
@@ -2389,7 +2399,7 @@
                     `;
                 }
             }
-        }
+        });
 
         if (game.nightTargets.detetiveCivil) {
             const target = getPlayerByName(game.nightTargets.detetiveCivil);
